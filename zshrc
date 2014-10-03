@@ -44,37 +44,15 @@ plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
-# Customize to your needs...
-
-source /opt/boxen/env.sh
-
-### Added by the Heroku Toolbelt
-
 export EDITOR="vim"
-
-alias drush="$HOME/.drush/drush"
-
 export GOROOT=/usr/local/go
 export GOPATH=/Users/srude/Documents/workspace/go
-
 export PATH="/Applications/Vagrant/bin:$GOPATH/bin:$HOME/.s3cmd:/usr/local/heroku/bin:$PATH"
 
-# added by travis gem
+source /opt/boxen/env.sh
 source /Users/srude/.travis/travis.sh
-
-function euca() {
-    source "/Users/srude/.euca/$1/eucarc"
-}
-
-euca "las1"
-
-function goeuca() {
-  open $EUCA_URL
-}
-
-unalias gp
-
-alias atom='/Applications/Atom.app/Contents/Resources/app/atom.sh'
-
-source /Users/srude/google-cloud-sdk/path.zsh.inc
+source $HOME/google-cloud-sdk/path.zsh.inc
 source $HOME/.zshrc_local
+
+alias drush="$HOME/.drush/drush"
+alias atom='/Applications/Atom.app/Contents/Resources/app/atom.sh'
