@@ -10,6 +10,7 @@ install: $(HOME)/.oh-my-zsh $(ALL_DOTFILE_LINKS) $(ALL_PRIVATE_DOTFILE_LINKS)
 
 $(HOME)/.oh-my-zsh:
 	curl -L http://install.ohmyz.sh | sh
+	mv $(HOME)/.zshrc $(HOME)/.zshrc-dist
 
 $(HOME)/.s3cmd:
 	mkdir -p $(HOME)/.s3cmd
