@@ -16,6 +16,6 @@ Plugin 'flazz/vim-colorschemes'
 call vundle#end()            " required
 filetype plugin indent on    " required
 
-set noet ci pi sts=0 sw=4 ts=4
+set noet ci pi sts=0 sw=4 ts=4 nu
 syntax enable
 colorscheme twilight256
