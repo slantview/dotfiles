@@ -46,13 +46,13 @@ source $ZSH/oh-my-zsh.sh
 
 export EDITOR="vim"
 export GOROOT="/usr/local/go"
-export GOPATH="/Users/srude/Documents/workspace/go"
+export GOPATH="$HOME/Documents/workspace/go"
 export PATH="/Applications/Vagrant/bin:$GOPATH/bin:$GOROOT/bin:$HOME/.s3cmd:/usr/local/heroku/bin:$PATH"
 
 export DOCKER_HOST="tcp://192.168.59.103:2375"
 
 source /opt/boxen/env.sh
-source /Users/srude/.travis/travis.sh
+source $HOME/.travis/travis.sh
 source $HOME/google-cloud-sdk/path.zsh.inc
 source $HOME/.zshrc_local
 
