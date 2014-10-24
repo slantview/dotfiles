@@ -51,10 +51,18 @@ export PATH="/Applications/Vagrant/bin:$GOPATH/bin:$GOROOT/bin:$HOME/.s3cmd:/usr
 
 export DOCKER_HOST="tcp://192.168.59.103:2375"
 
-source /opt/boxen/env.sh
-source $HOME/.travis/travis.sh
-source $HOME/google-cloud-sdk/path.zsh.inc
+if [ -f /opt/boxen/env.sh ]; then
+	source /opt/boxen/env.sh
+fi
+if [ -f $HOME/.travis/travis.sh ]; then 
+	source $HOME/.travis/travis.sh
+fi
+if [ -f $HOME/google-cloud-sdk/path.zsh.inc ]; then
+	source $HOME/google-cloud-sdk/path.zsh.inc
+fi
+
 source $HOME/.zshrc_local
 
 alias drush="$HOME/.drush/drush"
-alias atom='/Applications/Atom.app/Contents/Resources/app/atom.sh'
+alias atom="/Applications/Atom.app/Contents/Resources/app/atom.sh"
+alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
