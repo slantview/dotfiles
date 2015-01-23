@@ -47,9 +47,14 @@ source $ZSH/oh-my-zsh.sh
 export EDITOR="vim"
 export GOROOT="/usr/local/go"
 export GOPATH="/Users/srude/Documents/workspace/go"
-export PATH="/Applications/Vagrant/bin:$GOPATH/bin:$GOROOT/bin:$HOME/.s3cmd:/usr/local/heroku/bin:$PATH"
+export PATH="/opt/boxen/homebrew/bin:/Applications/Vagrant/bin:$GOPATH/bin:$GOROOT/bin:$HOME/.s3cmd:/usr/local/heroku/bin:$PATH"
 
 export DOCKER_HOST="tcp://192.168.59.103:2375"
+#export DOCKER_CERT_PATH="/Users/srude/.boot2docker/certs/boot2docker-vm"
+#export DOCKER_TLS_VERIFY=0
+export DOCKER_TLS="no"
+unset DOCKER_CERT_PATH
+unset DOCKER_TLS_VERIFY
 
 source /opt/boxen/env.sh
 source /Users/srude/.travis/travis.sh
@@ -58,3 +63,5 @@ source $HOME/.zshrc_local
 
 alias drush="$HOME/.drush/drush"
 alias atom='/Applications/Atom.app/Contents/Resources/app/atom.sh'
+
+export RDB_DEBUG=true

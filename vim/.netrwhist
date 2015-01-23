@@ -1,8 +1,9 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =6
+let g:netrw_dirhist_cnt =7
 let g:netrw_dirhist_1='/opt/boxen/config/boxen'
 let g:netrw_dirhist_2='/Users/srude/Library/Preferences/IdeaIC12'
 let g:netrw_dirhist_3='/Users/srude/Library/Preferences/IdeaIC12/colors'
 let g:netrw_dirhist_4='/opt/boxen/homebrew/etc'
 let g:netrw_dirhist_5='/Users/srude/Documents/workspace/go/src/gh.riotgames.com/srude/backdraft'
 let g:netrw_dirhist_6='/Users/srude/Documents/workspace/go/src/github.com/slantview/test'
+let g:netrw_dirhist_7='/Users/srude/Documents/workspace/go/src/go.riotgames.com/dat/admiral/cmd/admiralctl/test'
