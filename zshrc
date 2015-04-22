@@ -45,22 +45,16 @@ plugins=(git golang brew docker vim-interaction)
 source $ZSH/oh-my-zsh.sh
 
 export EDITOR="vim"
-export GOROOT="/usr/local/go"
-export GOPATH="/Users/srude/Documents/workspace/go"
+
 export PATH="$HOME/bin:/opt/boxen/homebrew/bin:/Applications/Vagrant/bin:$GOPATH/bin:$GOROOT/bin:$HOME/.s3cmd:/usr/local/heroku/bin:$PATH"
 
 export DOCKER_HOST="tcp://192.168.59.103:2376"
 export DOCKER_CERT_PATH="$HOME/.boot2docker/certs/boot2docker-vm"
 export DOCKER_TLS_VERIFY=1
 
+export GOPATH="$HOME/Documents/workspace/go"
+export PATH="/Applications/Vagrant/bin:$GOPATH/bin:$GOROOT/bin:$HOME/.s3cmd:/usr/local/heroku/bin:$PATH"
 
-source /opt/boxen/env.sh
-source /Users/srude/.travis/travis.sh
-source $HOME/google-cloud-sdk/path.zsh.inc
-source $HOME/.zshrc_local
-
-alias drush="$HOME/.drush/drush"
 alias atom='/Applications/Atom.app/Contents/Resources/app/atom.sh'
 alias electron="/Applications/Electron.app/Contents/MacOS/Electron"
-
-export RDB_DEBUG=true
+alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
