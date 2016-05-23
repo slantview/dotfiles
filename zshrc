@@ -48,13 +48,35 @@ export EDITOR="vim"
 
 export PATH="$HOME/bin:/opt/boxen/homebrew/bin:/Applications/Vagrant/bin:$GOPATH/bin:$GOROOT/bin:$HOME/.s3cmd:/usr/local/heroku/bin:$PATH"
 
-export DOCKER_HOST="tcp://192.168.59.103:2376"
-export DOCKER_CERT_PATH="$HOME/.boot2docker/certs/boot2docker-vm"
+#export DOCKER_HOST="tcp://192.168.59.103:2376"
+#export DOCKER_CERT_PATH="$HOME/.boot2docker/certs/boot2docker-vm"
+#export DOCKER_TLS_VERIFY=1
+export DOCKER_HOST=tcp://192.168.99.100:2376
+export DOCKER_MACHINE_NAME=default
 export DOCKER_TLS_VERIFY=1
+export DOCKER_CERT_PATH=/Users/srude/.docker/machine/machines/default
 
 export GOPATH="$HOME/Documents/workspace/go"
 export PATH="/Applications/Vagrant/bin:$GOPATH/bin:$GOROOT/bin:$HOME/.s3cmd:/usr/local/heroku/bin:$PATH"
 
 alias atom='/Applications/Atom.app/Contents/Resources/app/atom.sh'
-alias electron="/Applications/Electron.app/Contents/MacOS/Electron"
 alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
+
+# COMPLETION SETTINGS
+# add custom completion scripts
+fpath=(~/.zsh/completion $fpath)
+
+# compsys initialization
+autoload -U compinit
+compinit
+#
+# show completion menu when number of options is at least 2
+zstyle ':completion:*' menu select=2
+
+source $HOME/.zshrc_local
+
+# The next line updates PATH for the Google Cloud SDK.
+source '/Users/srude/google-cloud-sdk/path.zsh.inc'
+
+# The next line enables shell command completion for gcloud.
+source '/Users/srude/google-cloud-sdk/completion.zsh.inc'
