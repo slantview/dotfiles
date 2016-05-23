@@ -56,7 +56,8 @@ export DOCKER_MACHINE_NAME=default
 export DOCKER_TLS_VERIFY=1
 export DOCKER_CERT_PATH=/Users/srude/.docker/machine/machines/default
 
-export GOPATH="$HOME/Documents/workspace/go"
+export GOROOT="/usr/local/go"
+export GOPATH="$HOME"
 export PATH="/Applications/Vagrant/bin:$GOPATH/bin:$GOROOT/bin:$HOME/.s3cmd:/usr/local/heroku/bin:$PATH"
 
 alias atom='/Applications/Atom.app/Contents/Resources/app/atom.sh'
