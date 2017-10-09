@@ -21,5 +21,3 @@ source $HOME/.bashrc_local
 
 export GANDALF_ADDR="https:/gandalf-ares-usw2.rcluster.io"
 
-alias jq="$HOME/bin/jq -C"
-
