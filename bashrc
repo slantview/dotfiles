@@ -18,6 +18,3 @@ source $HOME/.bashrc_local
 
 # The next line enables shell command completion for gcloud.
 #source '/Users/srude/google-cloud-sdk/completion.zsh.inc'
-
-export GANDALF_ADDR="https:/gandalf-ares-usw2.rcluster.io"
-
