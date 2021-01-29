@@ -11,6 +11,8 @@ install: $(HOME)/.oh-my-zsh $(ALL_DOTFILE_LINKS) $(ALL_PRIVATE_DOTFILE_LINKS)
 $(HOME)/.oh-my-zsh:
 	curl -L http://install.ohmyz.sh | sh
 	mv $(HOME)/.zshrc $(HOME)/.zshrc-dist
+	git clone git@github.com:peterhurford/git-aliases.zsh.git ~/.oh-my-zsh/custom/plugins/git-aliases
+	git clone git@github.com:robertzk/send.zsh.git ~/.oh-my-zsh/custom/plugins/send
 
 $(HOME)/.s3cmd:
 	mkdir -p $(HOME)/.s3cmd
