@@ -46,22 +46,19 @@ source $ZSH/oh-my-zsh.sh
 
 export EDITOR="vim"
 
-export PATH="$HOME/bin:/opt/boxen/homebrew/bin:/Applications/Vagrant/bin:$GOPATH/bin:$GOROOT/bin:$HOME/.s3cmd:/usr/local/heroku/bin:$PATH"
+export PATH="$HOME/miniconda/bin:/usr/local/opt/python/libexec/bin:$HOME/kotlin/bin:$HOME/bin:/opt/boxen/homebrew/bin:/Applications/Vagrant/bin:$GOPATH/bin:$GOROOT/bin:$HOME/.s3cmd:/usr/local/heroku/bin:$PATH"
 
 #export DOCKER_HOST="tcp://192.168.59.103:2376"
 #export DOCKER_CERT_PATH="$HOME/.boot2docker/certs/boot2docker-vm"
 #export DOCKER_TLS_VERIFY=1
-export DOCKER_HOST=tcp://192.168.99.100:2376
-export DOCKER_MACHINE_NAME=default
-export DOCKER_TLS_VERIFY=1
-export DOCKER_CERT_PATH=/Users/srude/.docker/machine/machines/default
-
+#
 export GOROOT="/usr/local/go"
 export GOPATH="$HOME"
 export PATH="/Applications/Vagrant/bin:$GOPATH/bin:$GOROOT/bin:$HOME/.s3cmd:/usr/local/heroku/bin:$PATH"
 
 alias atom='/Applications/Atom.app/Contents/Resources/app/atom.sh'
 alias subl="/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl"
+alias code="/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code"
 
 # COMPLETION SETTINGS
 # add custom completion scripts
@@ -81,3 +78,14 @@ source '/Users/srude/google-cloud-sdk/path.zsh.inc'
 
 # The next line enables shell command completion for gcloud.
 source '/Users/srude/google-cloud-sdk/completion.zsh.inc'
+
+alias ug='uuidgen | tr "[:upper:]" "[:lower:]"'
+
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/tools
+export PATH=$PATH:$ANDROID_HOME/tools/bin
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+export PATH="/usr/local/opt/node@12/bin:$PATH"
+export PYTHONPATH=/usr/local/opt/python
+export PATH="/usr/local/opt/postgresql@12/bin:$PATH"
