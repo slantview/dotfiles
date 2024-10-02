@@ -36,8 +36,8 @@ compinit
 # show completion menu when number of options is at least 2
 zstyle ':completion:*' menu select=2
 
-source '/Users/srude/google-cloud-sdk/path.zsh.inc'
-source '/Users/srude/google-cloud-sdk/completion.zsh.inc'
+source "$HOME/google-cloud-sdk/path.zsh.inc"
+source "$HOME/google-cloud-sdk/completion.zsh.inc"
 source $HOME/.zshrc_local
 
 alias code="/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code"
