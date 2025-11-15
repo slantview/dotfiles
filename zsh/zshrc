@@ -11,6 +11,16 @@ fi
 # Source OS detection first (needed by other modules)
 [[ -f "$ZSH_CONFIG_DIR/os-specific.zsh" ]] && source "$ZSH_CONFIG_DIR/os-specific.zsh"
 
+# Set terminal cursor color to match Everforest theme (from ghostty config)
+# Cursor color: #d3c6aa (warm beige), cursor text color: #2e383c (dark green-gray)
+if [[ -n "$TERM" ]]; then
+  # Set cursor color using OSC escape sequences
+  # \e]12; sets cursor color, \a is BEL terminator
+  printf '\e]12;#d3c6aa\a' 2>/dev/null || true
+  # Some terminals use \e]112; for cursor color
+  printf '\e]112;#d3c6aa\a' 2>/dev/null || true
+fi
+
 # Initialize zinit (lightweight zsh plugin manager)
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 if [[ ! -f "$ZINIT_HOME/zinit.zsh" ]]; then
