@@ -304,9 +304,6 @@ This will remove all symlinks. Your original files (if backed up) will remain.
 
 ## License
 
-[Your License Here]
+MIT
 
-## Contributing
-
-[Your Contributing Guidelines Here]
 

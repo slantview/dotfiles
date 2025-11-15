@@ -46,7 +46,9 @@ serve() {
 }
 
 # Git commit with message
-gcm() {
+# Unset alias if it exists (from OMZ git plugin) before defining function
+unalias gcm 2>/dev/null || true
+function gcm() {
   git commit -m "$1"
 }
 
@@ -56,6 +58,7 @@ gac() {
 }
 
 # Git push current branch
+unalias gpu 2>/dev/null || true
 gpu() {
   git push -u origin "$(git branch --show-current)"
 }
