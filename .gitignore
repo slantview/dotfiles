@@ -1,0 +1,61 @@
+# Editor and IDE files
+*.swp
+*.swo
+*~
+.DS_Store
+.vscode/
+.idea/
+*.sublime-*
+
+# Neovim
+*.log
+*.tmp
+nvim/lazy-lock.json
+
+# Zsh
+.zcompdump*
+*.zwc
+zsh/.zsh_history
+
+# Backup files
+*.backup
+*.bak
+*.old
+.dotfiles-backup/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Local overrides (user-specific)
+*_local
+*local*
+.local/
+
+# Private files and credentials
+s3cfg
+*.key
+*.pem
+*.secret
+*.env
+*.env.*
+.env
+.env.local
+*.token
+*.credential
+id_rsa
+id_ed25519
+*.pub
+known_hosts
+
+# Logs
+*.log
+
+# Project-specific
+incoming/*

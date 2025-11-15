@@ -1,0 +1,41 @@
+# ────────────────────────────────────────────────────────────
+# Rudō (流道) Theme for Alacritty
+# Clean, minimal Japanese-inspired theme
+# ────────────────────────────────────────────────────────────
+
+[window]
+padding.x = 12
+padding.y = 12
+
+[font]
+size = 12.0
+normal = { family = "JetBrainsMono Nerd Font", style = "Regular" }
+bold = { family = "JetBrainsMono Nerd Font", style = "Bold" }
+italic = { family = "JetBrainsMono Nerd Font", style = "Italic" }
+bold_italic = { family = "JetBrainsMono Nerd Font", style = "Bold Italic" }
+
+[colors]
+[colors.primary]
+background = "#2d353b"
+foreground = "#d3c6aa"
+
+[colors.normal]
+black = "#475258"
+red = "#e67e80"
+green = "#a7c080"
+yellow = "#dbbc7f"
+blue = "#7fbbb3"
+magenta = "#d699b6"
+cyan = "#83c092"
+white = "#d3c6aa"
+
+[colors.bright]
+black = "#475258"
+red = "#e67e80"
+green = "#a7c080"
+yellow = "#dbbc7f"
+blue = "#7fbbb3"
+magenta = "#d699b6"
+cyan = "#83c092"
+white = "#d3c6aa"
+

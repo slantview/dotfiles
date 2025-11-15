@@ -1,22 +1,35 @@
-source /opt/boxen/env.sh
-[[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
-# added by Anaconda3 2019.03 installer
-# >>> conda init >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$(CONDA_REPORT_ERRORS=false '/anaconda3/bin/conda' shell.bash hook 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    \eval "$__conda_setup"
-else
-    if [ -f "/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/anaconda3/etc/profile.d/conda.sh"
-        CONDA_CHANGEPS1=false conda activate base
-    else
-        \export PATH="/anaconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda init <<<
-source "$HOME/.cargo/env"
+# Profile configuration with lazy loading for heavy tools
 
+# Boxen (if exists)
+[[ -f /opt/boxen/env.sh ]] && source /opt/boxen/env.sh
+
+# GVM (Go Version Manager) - lazy load
+load_gvm() {
+  [[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
+}
+
+# Conda - lazy load function
+load_conda() {
+  if [[ -f "$HOME/miniconda/etc/profile.d/conda.sh" ]]; then
+    . "$HOME/miniconda/etc/profile.d/conda.sh"
+  elif [[ -f "$HOME/anaconda3/etc/profile.d/conda.sh" ]]; then
+    . "$HOME/anaconda3/etc/profile.d/conda.sh"
+  elif [[ -f "/anaconda3/etc/profile.d/conda.sh" ]]; then
+    . "/anaconda3/etc/profile.d/conda.sh"
+  fi
+}
+
+# Cargo (Rust) - load if exists
+[[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
+
+# NVM (Node Version Manager) - lazy load function
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+load_nvm() {
+  [[ -s "$NVM_DIR/nvm.sh" ]] && \. "$NVM_DIR/nvm.sh"
+  [[ -s "$NVM_DIR/bash_completion" ]] && \. "$NVM_DIR/bash_completion"
+}
+
+# Auto-load conda and nvm only if they're likely to be needed
+# Uncomment the lines below if you want them to load automatically:
+# load_conda
+# load_nvm

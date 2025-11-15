@@ -1,0 +1,99 @@
+# Main zsh configuration
+# This file sources all modular configuration files
+
+# Determine the directory where this file is located
+ZSH_CONFIG_DIR="${${(%):-%x}:a:h}"
+if [[ "$ZSH_CONFIG_DIR" != "$HOME/.zsh" ]] && [[ "$ZSH_CONFIG_DIR" != "$HOME/.config/zsh" ]]; then
+  # Running from dotfiles repo, use current directory
+  ZSH_CONFIG_DIR="${${(%):-%x}:a:h}"
+fi
+
+# Source OS detection first (needed by other modules)
+[[ -f "$ZSH_CONFIG_DIR/os-specific.zsh" ]] && source "$ZSH_CONFIG_DIR/os-specific.zsh"
+
+# Initialize zinit (lightweight zsh plugin manager)
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+if [[ ! -f "$ZINIT_HOME/zinit.zsh" ]]; then
+  mkdir -p "$(dirname "$ZINIT_HOME")"
+  git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME" 2>/dev/null || true
+fi
+source "$ZINIT_HOME/zinit.zsh" 2>/dev/null || true
+
+# Load plugins with zinit
+# Git integration
+zinit light zdharma-continuum/zinit-annex-readurl 2>/dev/null
+zinit light zdharma-continuum/zinit-annex-patch-dl 2>/dev/null
+zinit snippet OMZ::plugins/git/git.plugin.zsh 2>/dev/null
+
+# Golang support
+zinit snippet OMZ::plugins/golang/golang.plugin.zsh 2>/dev/null
+
+# Docker support
+zinit snippet OMZ::plugins/docker/docker.plugin.zsh 2>/dev/null
+
+# Vim interaction
+zinit snippet OMZ::plugins/vi-mode/vi-mode.plugin.zsh 2>/dev/null
+
+# Syntax highlighting (must be loaded last)
+zinit light zsh-users/zsh-syntax-highlighting 2>/dev/null
+
+# Autosuggestions
+zinit light zsh-users/zsh-autosuggestions 2>/dev/null
+
+# Initialize zoxide (smarter cd)
+if command -v zoxide &> /dev/null; then
+  eval "$(zoxide init zsh)"
+fi
+
+# Initialize fzf key bindings (Ctrl+R for history, etc.)
+if command -v fzf &> /dev/null && [[ -f /usr/share/fzf/key-bindings.zsh ]]; then
+  source /usr/share/fzf/key-bindings.zsh
+elif command -v fzf &> /dev/null && [[ -f /usr/share/zsh/site-functions/fzf ]]; then
+  source /usr/share/zsh/site-functions/fzf
+fi
+
+# Git aliases (if available)
+if [[ -d "$HOME/.oh-my-zsh/custom/plugins/git-aliases" ]]; then
+  source "$HOME/.oh-my-zsh/custom/plugins/git-aliases/git-aliases.plugin.zsh" 2>/dev/null || true
+fi
+
+# Send plugin (if available)
+if [[ -d "$HOME/.oh-my-zsh/custom/plugins/send" ]]; then
+  source "$HOME/.oh-my-zsh/custom/plugins/send/send.plugin.zsh" 2>/dev/null || true
+fi
+
+# Source all modules
+[[ -f "$ZSH_CONFIG_DIR/paths.zsh" ]] && source "$ZSH_CONFIG_DIR/paths.zsh"
+[[ -f "$ZSH_CONFIG_DIR/aliases.zsh" ]] && source "$ZSH_CONFIG_DIR/aliases.zsh"
+[[ -f "$ZSH_CONFIG_DIR/functions.zsh" ]] && source "$ZSH_CONFIG_DIR/functions.zsh"
+[[ -f "$ZSH_CONFIG_DIR/completion.zsh" ]] && source "$ZSH_CONFIG_DIR/completion.zsh"
+
+# Initialize direnv (if installed)
+if command -v direnv &> /dev/null; then
+  eval "$(direnv hook zsh)"
+fi
+
+# Re-apply enhanced tool aliases after plugins (they may override)
+# eza - replacement for ls with more features
+if command -v eza &> /dev/null; then
+  alias ls="eza"
+  alias lt="eza --tree --level=2"
+  alias lsa="eza --all"
+  alias lta="eza --tree --level=2 --all"
+fi
+
+# Source local overrides (if exists)
+[[ -f "$HOME/.zshrc_local" ]] && source "$HOME/.zshrc_local"
+
+# Initialize Starship prompt (modern, fast, feature-rich)
+if command -v starship &> /dev/null; then
+  eval "$(starship init zsh)"
+else
+  # Fallback to simple prompt if Starship is not available
+  autoload -Uz vcs_info
+  precmd() { vcs_info }
+  zstyle ':vcs_info:git:*' formats ' (%b)'
+  setopt PROMPT_SUBST
+  PROMPT='%F{green}%n@%m%f %F{blue}%~%f%F{yellow}${vcs_info_msg_0_}%f $ '
+fi
+

@@ -1,21 +1,38 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
+" Minimal vimrc for backward compatibility
+" For full configuration, use Neovim: ~/.config/nvim/init.lua
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-Plugin 'gmarik/Vundle.vim'
-Plugin 'tpope/vim-fugitive'
-Plugin 'fatih/vim-go'
-Plugin 'flazz/vim-colorschemes'
-"Bundle 'lsdr/monokai'
-"Bundle 'jaromero/vim-monokai-refined'
-
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-
-set noet ci pi sts=0 sw=4 ts=4 nu
+" Basic settings
+set nocompatible
+filetype plugin indent on
 syntax enable
-colorscheme twilight256
+
+" Indentation
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set autoindent
+set smartindent
+
+" UI
+set number
+set relativenumber
+set cursorline
+set colorcolumn=80
+
+" Search
+set ignorecase
+set smartcase
+set hlsearch
+set incsearch
+
+" Colorscheme
+try
+  colorscheme twilight256
+catch
+  colorscheme default
+endtry
+
+" If Neovim is available, prefer it
+if executable('nvim')
+  command! -nargs=* -complete=file -bar Edit nvim <args>
+endif
