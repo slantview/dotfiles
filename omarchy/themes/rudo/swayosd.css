@@ -2,5 +2,7 @@
 @define-color border-color #d3c6aa;
 @define-color label #d3c6aa;
 @define-color image #d3c6aa;
-@define-color progress #d3c6aa;
+@define-color progress #FF8C00;
+@define-color saffron #FF8C00;
+@define-color accent #FF8C00;
 
