@@ -14,3 +14,6 @@ elif [[ -f "$HOME/.config/zsh/zshrc" ]]; then
   # Alternative config location
   source "$HOME/.config/zsh/zshrc"
 fi
+
+# Source local zshrc if it exists
+[[ -f "$HOME/.zshrc_local" ]] && source "$HOME/.zshrc_local"

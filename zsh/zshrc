@@ -79,8 +79,12 @@ fi
 [[ -f "$ZSH_CONFIG_DIR/completion.zsh" ]] && source "$ZSH_CONFIG_DIR/completion.zsh"
 
 # Initialize direnv (if installed)
+# Note: direnv will only run when there's a .envrc file in the current directory
+# 1password login should only be called from within .envrc files, not globally
 if command -v direnv &> /dev/null; then
   eval "$(direnv hook zsh)"
+  # Ensure direnv only processes .envrc files (not global .direnvrc)
+  export DIRENV_LOG_FORMAT=""
 fi
 
 # Re-apply enhanced tool aliases after plugins (they may override)

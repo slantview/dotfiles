@@ -39,7 +39,13 @@ fi
 
 # Kubernetes
 if command -v kubectl &> /dev/null; then
-  alias k="kubectl"
+  # Lazy-load kubeconfig if load_kubeconfig function exists (from .zshrc_local)
+  k() {
+    if typeset -f load_kubeconfig > /dev/null; then
+      load_kubeconfig
+    fi
+    kubectl "$@"
+  }
   alias kctx="kubectl config use-context"
 fi
 

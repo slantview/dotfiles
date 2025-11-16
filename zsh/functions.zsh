@@ -88,6 +88,47 @@ load_pyenv() {
   fi
 }
 
+# Wrapper for 1password CLI to only allow login when direnv and .envrc are present
+# This prevents constant password prompts when 1password is called globally
+if command -v op &> /dev/null; then
+  op() {
+    local cmd="$1"
+    # Check if this is a login/signin command
+    if [[ "$cmd" == "signin" ]] || [[ "$cmd" == "login" ]]; then
+      # Only allow login if we're in a directory with a .envrc file
+      # and direnv is available
+      if command -v direnv &> /dev/null; then
+        local current_dir="$PWD"
+        local found_envrc=false
+        
+        # Walk up the directory tree to find .envrc
+        while [[ -n "$current_dir" ]] && [[ "$current_dir" != "/" ]]; do
+          if [[ -f "$current_dir/.envrc" ]]; then
+            found_envrc=true
+            break
+          fi
+          # Stop at home directory to avoid checking parent directories
+          if [[ "$current_dir" == "$HOME" ]]; then
+            break
+          fi
+          current_dir="$(dirname "$current_dir")"
+        done
+        
+        if [[ "$found_envrc" == "false" ]]; then
+          echo "1password login is only allowed when a .envrc file is present in the current directory or a parent directory"
+          return 1
+        fi
+      else
+        echo "1password login requires direnv to be installed"
+        return 1
+      fi
+    fi
+    
+    # For all other op commands, or if conditions are met, run the actual op command
+    command op "$@"
+  }
+fi
+
 # This fixes issues with fcitx5/ibus interfering with sudo password input
 #sudo() {
 #  # Temporarily disable input method environment variables for password prompt
