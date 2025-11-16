@@ -79,16 +79,15 @@ load_conda() {
   fi
 }
 
-# Sudo wrapper that disables input method for password prompts
 # This fixes issues with fcitx5/ibus interfering with sudo password input
-sudo() {
-  # Temporarily disable input method environment variables for password prompt
-  if command -v fcitx5-remote >/dev/null 2>&1; then
-    # Switch to English input before sudo
-    fcitx5-remote -c 2>/dev/null || true
-  fi
-  
-  # Run sudo with input method disabled for the password prompt
-  env GTK_IM_MODULE="" QT_IM_MODULE="" XMODIFIERS="" command sudo "$@"
-}
+#sudo() {
+#  # Temporarily disable input method environment variables for password prompt
+#  if command -v fcitx5-remote >/dev/null 2>&1; then
+#    # Switch to English input before sudo
+#    fcitx5-remote -c 2>/dev/null || true
+#  fi
+#
+#  # Run sudo with input method disabled for the password prompt
+#  env GTK_IM_MODULE="" QT_IM_MODULE="" XMODIFIERS="" command sudo "$@"
+#}
 
