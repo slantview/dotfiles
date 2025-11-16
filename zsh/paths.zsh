@@ -26,6 +26,7 @@ append_to_path() {
 
 # Core paths (always first)
 prepend_to_path "$HOME/bin"
+prepend_to_path "$HOME/.local/bin"
 
 # Go paths
 if [[ -n "$GOROOT" ]] && [[ -d "$GOROOT/bin" ]]; then

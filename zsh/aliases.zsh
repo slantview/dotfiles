@@ -38,15 +38,54 @@ if command -v terraform &> /dev/null; then
 fi
 
 # Kubernetes
+# Always define k() function - it will check for kubectl at runtime
+# Lazy-load kubeconfig if load_kubeconfig function exists (from .zshrc_local)
+k() {
+  if ! command -v kubectl &> /dev/null; then
+    echo "Error: kubectl is not installed or not in PATH" >&2
+    return 1
+  fi
+  
+  # Lazy-load kubeconfig if the function exists
+  if typeset -f load_kubeconfig > /dev/null; then
+    load_kubeconfig
+  fi
+  
+  kubectl "$@"
+}
+
+# kubectl context switching alias (only if kubectl is available)
 if command -v kubectl &> /dev/null; then
-  # Lazy-load kubeconfig if load_kubeconfig function exists (from .zshrc_local)
-  k() {
-    if typeset -f load_kubeconfig > /dev/null; then
-      load_kubeconfig
-    fi
-    kubectl "$@"
-  }
   alias kctx="kubectl config use-context"
+  alias kns="kubectl config set-context --current --namespace"
+fi
+
+# k9s - Kubernetes CLI to manage clusters
+if command -v k9s &> /dev/null; then
+  alias k9="k9s"
+fi
+
+# helm - Kubernetes package manager
+if command -v helm &> /dev/null; then
+  alias h="helm"
+fi
+
+# stern - Multi pod and container log tailing
+if command -v stern &> /dev/null; then
+  alias klogs="stern"
+fi
+
+# kubectx/kubens - Context and namespace switching (if installed)
+if command -v kubectx &> /dev/null; then
+  alias kx="kubectx"
+fi
+if command -v kubens &> /dev/null; then
+  alias kn="kubens"
+fi
+
+# kubectl-tree - Show object hierarchy (if installed as kubectl plugin)
+if command -v kubectl-tree &> /dev/null; then
+  alias ktree="kubectl tree"
 fi
 
 # Go
