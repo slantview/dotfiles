@@ -70,12 +70,21 @@ load_nvm() {
   [[ -s "$NVM_DIR/bash_completion" ]] && \. "$NVM_DIR/bash_completion"
 }
 
-# Lazy load conda
-load_conda() {
-  if [[ -f "$HOME/miniconda/etc/profile.d/conda.sh" ]]; then
-    . "$HOME/miniconda/etc/profile.d/conda.sh"
-  elif [[ -f "$HOME/anaconda3/etc/profile.d/conda.sh" ]]; then
-    . "$HOME/anaconda3/etc/profile.d/conda.sh"
+# Lazy load pyenv
+load_pyenv() {
+  export PYENV_ROOT="$HOME/.pyenv"
+  if [[ -d "$PYENV_ROOT" ]]; then
+    # Add pyenv to PATH if not already there
+    if [[ ":$PATH:" != *":$PYENV_ROOT/bin:"* ]]; then
+      export PATH="$PYENV_ROOT/bin:$PATH"
+    fi
+    if command -v pyenv &> /dev/null; then
+      eval "$(pyenv init -)"
+      # Also initialize pyenv-virtualenv if available
+      if command -v pyenv-virtualenv-init &> /dev/null; then
+        eval "$(pyenv virtualenv-init -)"
+      fi
+    fi
   fi
 }
 

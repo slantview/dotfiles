@@ -56,20 +56,14 @@ elif [[ "$IS_LINUX" == "true" ]] || [[ "$IS_WSL" == "true" ]]; then
 fi
 
 # Common development tools
-prepend_to_path "$HOME/miniconda/bin"
 prepend_to_path "$HOME/kotlin/bin"
 prepend_to_path "$HOME/.s3cmd"
 prepend_to_path "$HOME/.cargo/bin"
 prepend_to_path "/usr/local/heroku/bin"
 
-# pyenv setup (if installed)
-if [[ -d "$HOME/.pyenv" ]]; then
-  export PYENV_ROOT="$HOME/.pyenv"
-  prepend_to_path "$PYENV_ROOT/bin"
-  if command -v pyenv &> /dev/null; then
-    eval "$(pyenv init -)"
-  fi
-fi
+# pyenv setup - lazy loaded via load_pyenv() function in functions.zsh
+# Set PYENV_ROOT for reference, but don't initialize until needed
+export PYENV_ROOT="$HOME/.pyenv"
 
 # Cargo environment (if installed)
 if [[ -f "$HOME/.cargo/env" ]]; then
