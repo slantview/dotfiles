@@ -1,5 +1,5 @@
 # Starship prompt configuration
-# Modern, fast, and feature-rich prompt with Everforest colors
+# Modern, fast, and feature-rich prompt with rudo theme colors
 
 # Format: compact prompt with directory, git info, and character
 format = """

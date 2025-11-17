@@ -1,0 +1,138 @@
+# Rudō (流道) Theme - Unified Color Palette
+# Zen Buddhism-inspired design
+# Kanso (simplicity), Shizen (naturalness), Seijaku (tranquility)
+
+# ============================================================================
+# Core Palette - Primary Colors
+# ============================================================================
+
+# Backgrounds
+#2d353b  - bg-primary        Main background (warm dark green-gray) - primary UI background
+#272e33  - bg-secondary      Alternate background (darker green-gray) - sidebars, panels
+#343f44  - bg-dark           Dark black (terminal black, borders, darkest elements)
+#3d484d  - bg-mid            Mid-tone dark (widgets, inactive elements, dividers)
+#475258  - bg-hover          Medium dark (hover states, borders, interactive elements)
+
+# Foregrounds
+#d3c6aa  - fg-primary        Main foreground (soft warm beige) - primary text color
+#859289  - fg-secondary      Secondary foreground (light gray-green) - inactive text
+#9da9a0  - fg-bright         Bright white (terminal bright white, highlights, active text)
+#868d80  - fg-dim            Bright black (terminal bright black, dimmed text)
+
+# Primary Accent
+#FF8C00  - accent-primary    Saffron orange (primary accent) - Tibetan monk robe color
+                            # Use for: active states, highlights, focus, borders, buttons
+
+# ============================================================================
+# Extended Palette - Semantic Colors
+# ============================================================================
+
+# Red Family
+#e67e80  - red               Soft coral red - errors, warnings, destructive actions
+#f85552  - red-bright        Bright red - critical states, high intensity indicators
+#a55555  - red-muted         Muted red - subtle error indicators, recording states
+
+# Orange Family
+#e69875  - orange            Warm orange - secondary orange accent, warm highlights
+#d67923  - orange-muted      Muted orange - secondary accent, alternative to saffron
+#FFA500  - orange-bright     Bright orange - hover states, high visibility accents
+
+# Yellow Family
+#dbbc7f  - yellow            Muted yellow - warnings, highlights, selected items
+
+# Green Family
+#a7c080  - green             Soft green - success states, positive indicators, primary accent variant
+#b5da61  - green-bright      Bright yellow-green - highlight variant, success highlights
+
+# Blue/Cyan Family
+#7fbbb3  - blue              Teal blue - links, info states, secondary accent
+#83c092  - cyan              Soft aqua/cyan - secondary links, tertiary accent
+#156465  - teal-dark         Dark teal/cyan - darker blue variant, depth accents
+
+# Magenta/Purple Family
+#d699b6  - magenta           Soft pink/magenta - special highlights, decorative elements
+#2c244a  - purple-dark       Dark purple/indigo - accent color, depth, special states
+
+# Brown/Tan Family
+#b87850  - brown             Earth brown/tan - earth tone, natural accents
+#f8d094  - beige-light       Light beige/cream - lighter foreground variant, subtle highlights
+
+# ============================================================================
+# Extended Backgrounds - Additional Shades
+# ============================================================================
+
+#464e53  - bg-selection      Selection background (for selected text, items)
+#2e383c  - bg-tabbar         Tab bar background, cursor text color background
+#374145  - bg-tab-inactive   Inactive tab background
+#4f5b58  - bg-border-inactive Inactive border color
+
+# ============================================================================
+# Terminal ANSI Colors
+# ============================================================================
+
+# Black
+#343f44  - ansi-black        ANSI Black (standard) - same as bg-dark
+#868d80  - ansi-black-bright ANSI Bright Black - same as fg-dim
+
+# Red
+#e67e80  - ansi-red          ANSI Red (standard and bright)
+
+# Green
+#a7c080  - ansi-green        ANSI Green (standard and bright)
+
+# Yellow
+#dbbc7f  - ansi-yellow       ANSI Yellow (standard and bright)
+
+# Blue
+#7fbbb3  - ansi-blue         ANSI Blue (standard and bright)
+
+# Magenta
+#d699b6  - ansi-magenta      ANSI Magenta (standard and bright)
+
+# Cyan
+#83c092  - ansi-cyan         ANSI Cyan (standard and bright)
+
+# White
+#859289  - ansi-white        ANSI White (standard) - same as fg-secondary
+#9da9a0  - ansi-white-bright ANSI Bright White - same as fg-bright
+
+# ============================================================================
+# Color Usage Guidelines
+# ============================================================================
+
+# Primary Colors (Most Common)
+#   Background:  #2d353b (bg-primary) - Main UI background
+#   Background:  #272e33 (bg-secondary) - Sidebars, panels, alternate backgrounds
+#   Foreground:  #d3c6aa (fg-primary) - Main text color
+#   Accent:      #FF8C00 (accent-primary) - Active states, highlights, focus
+
+# Semantic Colors
+#   Error:       #e67e80 (red) - Errors, warnings, destructive actions
+#   Success:     #a7c080 (green) - Success states, positive feedback
+#   Info:        #7fbbb3 (blue) - Links, informational elements
+#   Warning:     #dbbc7f (yellow) - Warnings, highlights
+
+# Interactive States
+#   Hover:       #475258 (bg-hover) or #3d484d (bg-mid)
+#   Active:      #FF8C00 (accent-primary)
+#   Selected:    #3d484d (bg-mid) or #FF8C00 (accent-primary) with transparency
+#   Inactive:    #859289 (fg-secondary)
+
+# Borders & Dividers
+#   Active:      #FF8C00 (accent-primary)
+#   Inactive:    #3d484d (bg-mid) or #4f5b58 (bg-border-inactive)
+#   Default:     #343f44 (bg-dark)
+
+# ============================================================================
+# Design Philosophy
+# ============================================================================
+
+# The theme emphasizes warm, soft colors that are easy on the eyes,
+# with the saffron orange (#FF8C00) as the primary accent color inspired
+# by Tibetan monk robes, representing the Zen Buddhist aesthetic.
+
+# Color relationships:
+# - Backgrounds progress from darkest (#272e33) to lighter (#2d353b) to mid-tones (#3d484d)
+# - Foregrounds progress from dim (#868d80) to normal (#d3c6aa) to bright (#9da9a0)
+# - Accents use warm colors (saffron, green, teal) for harmony
+# - Errors use soft coral red (#e67e80) to be noticeable but not jarring

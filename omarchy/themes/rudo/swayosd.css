@@ -1,8 +1,17 @@
-@define-color background-color #2d353b;
-@define-color border-color #d3c6aa;
-@define-color label #d3c6aa;
-@define-color image #d3c6aa;
-@define-color progress #FF8C00;
-@define-color saffron #FF8C00;
-@define-color accent #FF8C00;
+/* Rudō (流道) Theme - SwayOSD CSS */
+/* See colors.txt for complete unified palette reference */
+
+/* Core Palette */
+@define-color bg-primary #2d353b;
+@define-color fg-primary #d3c6aa;
+@define-color accent-primary #FF8C00;
+
+/* Legacy aliases */
+@define-color background-color @bg-primary;
+@define-color border-color @fg-primary;
+@define-color label @fg-primary;
+@define-color image @fg-primary;
+@define-color progress @accent-primary;
+@define-color saffron @accent-primary;
+@define-color accent @accent-primary;
 

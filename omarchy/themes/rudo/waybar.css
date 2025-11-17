@@ -1,10 +1,61 @@
 /* Rudō (流道) Theme - Waybar CSS */
 /* Zen Buddhism: Kanso (simplicity), Shizen (naturalness), Seijaku (tranquility) */
-/* Everforest color palette - warm and soft green-based colors */
-/* Saffron orange highlight - Tibetan monk robe color */
+/* Warm and soft green-based color palette */
+/* See colors.txt for complete unified palette reference */
 
+/* Core Palette - Primary Colors */
+@define-color bg-primary #2d353b;       /* Main background */
+@define-color bg-secondary #272e33;     /* Alternate background */
+@define-color bg-dark #343f44;          /* Dark black */
+@define-color bg-mid #3d484d;           /* Mid-tone dark */
+@define-color bg-hover #475258;         /* Hover states */
+
+@define-color fg-primary #d3c6aa;       /* Main foreground */
+@define-color fg-secondary #859289;     /* Secondary foreground */
+@define-color fg-bright #9da9a0;        /* Bright white */
+@define-color fg-dim #868d80;           /* Dimmed text */
+
+@define-color accent-primary #FF8C00;   /* Saffron orange - primary accent */
+
+/* Extended Palette - Semantic Colors */
+@define-color red #e67e80;              /* Soft coral red */
+@define-color red-bright #f85552;       /* Bright red */
+@define-color red-muted #a55555;        /* Muted red */
+
+@define-color orange #e69875;           /* Warm orange */
+@define-color orange-muted #d67923;     /* Muted orange */
+@define-color orange-bright #FFA500;    /* Bright orange */
+
+@define-color yellow #dbbc7f;           /* Muted yellow */
+
+@define-color green #a7c080;            /* Soft green */
+@define-color green-bright #b5da61;     /* Bright yellow-green */
+
+@define-color blue #7fbbb3;             /* Teal blue */
+@define-color cyan #83c092;             /* Soft aqua/cyan */
+@define-color teal-dark #156465;        /* Dark teal/cyan */
+
+@define-color magenta #d699b6;          /* Soft pink/magenta */
+@define-color purple-dark #2c244a;      /* Dark purple/indigo */
+
+@define-color brown #b87850;            /* Earth brown/tan */
+@define-color beige-light #f8d094;      /* Light beige/cream */
+
+/* Extended Backgrounds */
+@define-color bg-selection #464e53;     /* Selection background */
+@define-color bg-tabbar #2e383c;        /* Tab bar background */
+@define-color bg-tab-inactive #374145;  /* Inactive tab background */
+@define-color bg-border-inactive #4f5b58; /* Inactive border */
+
+/* Legacy aliases for compatibility */
 @define-color foreground #d3c6aa;
 @define-color background #2d353b;
 @define-color saffron #FF8C00;
 @define-color accent #FF8C00;
+@define-color light-green #b5da61;
+@define-color dark-teal #156465;
+@define-color muted-orange #d67923;
+@define-color light-beige #f8d094;
+@define-color dark-purple #2c244a;
+@define-color earth-brown #b87850;
 

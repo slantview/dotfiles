@@ -1,0 +1,436 @@
+/* Rudō (流道) Theme - Spicetify Custom CSS */
+/* Zen Buddhism: Kanso (simplicity), Shizen (naturalness), Seijaku (tranquility) */
+/* Warm and soft green-based color palette */
+/* See colors.txt for complete unified palette reference */
+
+/* Unified Color Palette Variables */
+:root {
+  /* Core Palette */
+  --bg-primary: #2d353b;
+  --bg-secondary: #272e33;
+  --bg-dark: #343f44;
+  --bg-mid: #3d484d;
+  --bg-hover: #475258;
+  --fg-primary: #d3c6aa;
+  --fg-secondary: #859289;
+  --fg-bright: #9da9a0;
+  --accent-primary: #FF8C00;
+  
+  /* Extended Palette */
+  --red: #e67e80;
+  --orange: #e69875;
+  --orange-muted: #d67923;
+  --yellow: #dbbc7f;
+  --green: #a7c080;
+  --blue: #7fbbb3;
+  --cyan: #83c092;
+  --magenta: #d699b6;
+  --brown: #b87850;
+  --beige-light: #f8d094;
+  
+  /* Theme-specific colors */
+  --accent-subdued: #b87850;  /* Earth brown for active states - more subdued than saffron */
+  --accent-hover: #d67923;    /* Muted orange for hover states - earth tone */
+  --volume-accent: #f8d094;   /* Light beige for volume control */
+  
+  /* Legacy variable aliases (deprecated - use unified palette names above) */
+  --everforest-bg: var(--bg-primary);
+  --everforest-bg-alt: var(--bg-secondary);
+  --everforest-fg: var(--fg-primary);
+  --everforest-red: var(--red);
+  --everforest-orange: var(--orange);
+  --everforest-yellow: var(--yellow);
+  --everforest-green: var(--green);
+  --everforest-blue: var(--blue);
+  --everforest-aqua: var(--cyan);
+  --everforest-magenta: var(--magenta);
+  --everforest-black: var(--bg-dark);
+  --everforest-white: var(--fg-secondary);
+  --everforest-saffron: var(--accent-primary);
+}
+
+/* Additional refinements - Main container */
+.main-view-container__scroll-node,
+.Root__main-view {
+  background: var(--bg-primary) !important;
+}
+
+/* Player controls */
+.main-nowPlayingWidget-container,
+.main-nowPlayingBar-container {
+  background: var(--bg-secondary) !important;
+  border-top: 1px solid var(--bg-dark) !important;
+}
+
+/* Sidebar */
+.Root__nav-bar,
+.Root__sidebar {
+  background: var(--bg-secondary) !important;
+}
+
+/* Sidebar navigation items */
+.main-navBar-navBarItem {
+  color: var(--fg-secondary) !important;
+}
+
+.main-navBar-navBarItem[aria-current="page"] {
+  color: var(--accent-subdued) !important;
+}
+
+/* Selected items */
+.main-rootlist-rootlistItem[aria-selected="true"],
+.main-rootlist-rootlistItem[aria-selected="true"] .main-rootlist-rootlistItemLink {
+  background: var(--bg-dark) !important;
+  color: var(--accent-subdued) !important;
+}
+
+/* Hover effects */
+.main-rootlist-rootlistItem:hover,
+.main-rootlist-rootlistItem:hover .main-rootlist-rootlistItemLink {
+  background: var(--bg-dark) !important;
+}
+
+/* Progress bar / Scrubber */
+.progress-bar__fg,
+.progress-bar__slider-progress {
+  background: var(--accent-subdued) !important;  /* Earth brown for progress */
+}
+
+.progress-bar__bg,
+.progress-bar__slider,
+.progress-bar__slider-bg {
+  background: var(--bg-mid) !important;  /* Dark gray for background */
+}
+
+/* Scrubber dots/grabber - use earth tones like controls */
+.progress-bar__slider-indicator,
+.progress-bar__slider-indicator::before,
+.progress-bar__slider-indicator::after {
+  background: var(--accent-subdued) !important;  /* Earth brown for grabber */
+  border: 2px solid var(--accent-subdued) !important;
+}
+
+.progress-bar__slider-indicator:hover {
+  background: var(--accent-hover) !important;  /* Muted orange on hover */
+  border: 2px solid var(--accent-hover) !important;
+}
+
+/* Volume control - using light beige - specific selectors only */
+.volume-bar__fg,
+.volume-bar__slider-progress,
+.main-volumeBar-volumeBar:not([aria-valuenow="0"]) {
+  background: var(--volume-accent) !important;  /* Light beige for volume level */
+  background-color: var(--volume-accent) !important;
+}
+
+.volume-bar__bg,
+.volume-bar__slider,
+.volume-bar__slider-bg,
+.main-volumeBar-volumeBar[aria-valuenow="0"] {
+  background: var(--bg-mid) !important;  /* Dark gray for background */
+  background-color: var(--bg-mid) !important;
+}
+
+/* Volume dots/grabber - use light beige */
+.volume-bar__slider-indicator,
+.volume-bar__slider-indicator::before,
+.volume-bar__slider-indicator::after {
+  background: var(--volume-accent) !important;  /* Light beige for grabber */
+  background-color: var(--volume-accent) !important;
+  border: 2px solid var(--volume-accent) !important;
+  border-color: var(--volume-accent) !important;
+}
+
+.volume-bar__slider-indicator:hover {
+  background: var(--accent-hover) !important;  /* Muted orange on hover */
+  background-color: var(--accent-hover) !important;
+  border: 2px solid var(--accent-hover) !important;
+  border-color: var(--accent-hover) !important;
+}
+
+/* Only target specific progress/fill elements within volume bar, not all children */
+.main-volumeBar-volumeBar[class*="progress"],
+.main-volumeBar-volumeBar[class*="fill"],
+.main-volumeBar-volumeBar[class*="filled"] {
+  background: var(--volume-accent) !important;
+  background-color: var(--volume-accent) !important;
+}
+
+/* Play button and control buttons */
+button[aria-label*="Play"],
+button[aria-label*="Pause"],
+button[aria-label*="Next"],
+button[aria-label*="Previous"],
+button[aria-label*="Shuffle"],
+button[aria-label*="Repeat"],
+.main-controls-button,
+.main-controls-button svg,
+.main-controls-button path,
+.main-controls-button circle,
+.main-controls-button rect,
+.main-controls-button polygon,
+button[data-testid="control-button-play-pause"],
+button[data-testid="control-button-skip-forward"],
+button[data-testid="control-button-skip-back"],
+button[data-testid="control-button-shuffle"],
+button[data-testid="control-button-repeat"],
+button[data-testid="control-button-shuffle"] svg,
+button[data-testid="control-button-repeat"] svg,
+button[data-testid="control-button-play-pause"] svg,
+button[data-testid="control-button-skip-forward"] svg,
+button[data-testid="control-button-skip-back"] svg {
+  color: var(--fg-primary) !important;
+  fill: var(--fg-primary) !important;
+}
+
+button[aria-label*="Play"]:hover,
+button[aria-label*="Pause"]:hover,
+button[aria-label*="Next"]:hover,
+button[aria-label*="Previous"]:hover,
+button[aria-label*="Shuffle"]:hover,
+button[aria-label*="Repeat"]:hover,
+.main-controls-button:hover,
+.main-controls-button:hover svg,
+.main-controls-button:hover path,
+.main-controls-button:hover circle,
+.main-controls-button:hover rect,
+.main-controls-button:hover polygon,
+button[data-testid="control-button-play-pause"]:hover,
+button[data-testid="control-button-skip-forward"]:hover,
+button[data-testid="control-button-skip-back"]:hover,
+button[data-testid="control-button-shuffle"]:hover,
+button[data-testid="control-button-repeat"]:hover {
+  color: var(--accent-hover) !important;
+  fill: var(--accent-hover) !important;
+}
+
+/* All buttons - general override */
+button,
+.Button-sc-1dqy6k0-0 {
+  color: var(--fg-primary) !important;
+}
+
+button:hover,
+.Button-sc-1dqy6k0-0:hover {
+  background: var(--bg-dark) !important;
+  color: var(--accent-hover) !important;
+}
+
+/* SVG icons in buttons */
+button svg,
+button path,
+button circle,
+button rect,
+button polygon,
+button g {
+  color: var(--fg-primary) !important;
+  fill: var(--fg-primary) !important;
+}
+
+button:hover svg,
+button:hover path,
+button:hover circle,
+button:hover rect,
+button:hover polygon,
+button:hover g {
+  color: var(--accent-hover) !important;
+  fill: var(--accent-hover) !important;
+}
+
+/* Text colors - use brighter color for headers/main text */
+.main-type-ballad,
+.main-type-mesto,
+.main-type-taupe,
+.main-type-finale {
+  color: var(--fg-bright) !important;
+}
+
+/* Headers and prominent text - use brightest for readability */
+h1, h2, h3, h4, h5, h6,
+.main-type-balladBold,
+.main-type-mestoBold,
+.main-type-taupeBold,
+.main-type-finaleBold,
+[class*="main-type"][class*="Bold"] {
+  color: var(--fg-bright) !important;
+}
+
+/* Search bar */
+.main-searchSearchInput-input {
+  background: var(--bg-dark) !important;
+  color: var(--fg-primary) !important;
+  border: 1px solid var(--bg-mid) !important;
+}
+
+/* Cards and containers */
+.main-card-card,
+.main-card-cardContainer {
+  background: var(--bg-secondary) !important;
+}
+
+/* Scrollbars */
+.main-rootlist-rootlistItem::-webkit-scrollbar-thumb {
+  background: var(--bg-mid) !important;
+}
+
+/* Links */
+a,
+.main-type-link {
+  color: var(--blue) !important;
+}
+
+a:hover,
+.main-type-link:hover {
+  color: var(--accent-primary) !important;
+}
+
+/* Additional player controls - catch-all for white elements */
+.main-nowPlayingBar-container *,
+.main-nowPlayingBar-container button,
+.main-nowPlayingBar-container svg,
+.main-nowPlayingBar-container path,
+.main-nowPlayingBar-container circle,
+.main-nowPlayingBar-container rect,
+.main-nowPlayingBar-container polygon,
+.main-nowPlayingBar-container g {
+  color: var(--fg-primary) !important;
+  fill: var(--fg-primary) !important;
+}
+
+.main-nowPlayingBar-container button:hover,
+.main-nowPlayingBar-container button:hover svg,
+.main-nowPlayingBar-container button:hover path {
+  color: var(--accent-hover) !important;
+  fill: var(--accent-hover) !important;
+}
+
+/* Volume button and slider */
+button[aria-label*="Volume"],
+button[aria-label*="Mute"],
+.main-volumeBar-button,
+.main-volumeBar-button svg,
+.main-volumeBar-button path {
+  color: var(--fg-primary) !important;
+  fill: var(--fg-primary) !important;
+}
+
+button[aria-label*="Volume"]:hover,
+button[aria-label*="Mute"]:hover,
+.main-volumeBar-button:hover,
+.main-volumeBar-button:hover svg,
+.main-volumeBar-button:hover path {
+  color: var(--accent-hover) !important;
+  fill: var(--accent-hover) !important;
+}
+
+/* Time display */
+.main-nowPlayingBar-timeDuration,
+.main-nowPlayingBar-timePassed {
+  color: var(--fg-secondary) !important;
+}
+
+/* Override any white text/backgrounds in player area - use bright for readability */
+.main-nowPlayingBar-container .main-type-ballad,
+.main-nowPlayingBar-container .main-type-mesto,
+.main-nowPlayingBar-container .main-type-taupe,
+.main-nowPlayingBar-container .main-type-finale {
+  color: var(--fg-bright) !important;
+}
+
+/* ============================================================================
+   AGGRESSIVE WHITE COLOR OVERRIDES
+   ============================================================================ */
+
+/* Force override white colors in inline styles */
+[style*="color: #fff"],
+[style*="color: #ffffff"],
+[style*="color: rgb(255, 255, 255)"],
+[style*="color: rgb(255,255,255)"],
+[style*="color: white"] {
+  color: var(--fg-primary) !important;
+}
+
+[style*="fill: #fff"],
+[style*="fill: #ffffff"],
+[style*="fill: rgb(255, 255, 255)"],
+[style*="fill: rgb(255,255,255)"],
+[style*="fill: white"] {
+  fill: var(--fg-primary) !important;
+}
+
+[style*="background: #fff"],
+[style*="background: #ffffff"],
+[style*="background: rgb(255, 255, 255)"],
+[style*="background: rgb(255,255,255)"],
+[style*="background: white"] {
+  background: var(--bg-secondary) !important;
+}
+
+[style*="background-color: #fff"],
+[style*="background-color: #ffffff"],
+[style*="background-color: rgb(255, 255, 255)"],
+[style*="background-color: rgb(255,255,255)"],
+[style*="background-color: white"] {
+  background-color: var(--bg-secondary) !important;
+}
+
+/* Override white in all SVG elements within player area */
+.main-nowPlayingBar-container svg,
+.main-nowPlayingBar-container svg *,
+.main-nowPlayingBar-container path,
+.main-nowPlayingBar-container circle,
+.main-nowPlayingBar-container rect,
+.main-nowPlayingBar-container polygon,
+.main-nowPlayingBar-container g,
+.main-nowPlayingBar-container line,
+.main-nowPlayingBar-container polyline,
+.main-nowPlayingBar-container ellipse {
+  color: var(--fg-primary) !important;
+  fill: var(--fg-primary) !important;
+  stroke: var(--fg-primary) !important;
+}
+
+/* Override white in control buttons SVG */
+button svg,
+button svg *,
+button path,
+button circle,
+button rect,
+button polygon,
+button g,
+button line,
+button polyline,
+button ellipse {
+  color: var(--fg-primary) !important;
+  fill: var(--fg-primary) !important;
+  stroke: var(--fg-primary) !important;
+}
+
+
+/* All text elements in player area - use bright for readability */
+.main-nowPlayingBar-container span,
+.main-nowPlayingBar-container div,
+.main-nowPlayingBar-container p,
+.main-nowPlayingBar-container label,
+.main-controls-container span,
+.main-controls-container div,
+.main-controls-container p,
+.main-controls-container label,
+.main-volumeBar-container span,
+.main-volumeBar-container div,
+.main-volumeBar-container p,
+.main-volumeBar-container label {
+  color: var(--fg-bright) !important;
+}
+
+/* But ensure links are still blue */
+a,
+.main-type-link {
+  color: var(--blue) !important;
+}
+
+a:hover,
+.main-type-link:hover {
+  color: var(--accent-primary) !important;
+}
+

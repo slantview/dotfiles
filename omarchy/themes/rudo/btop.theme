@@ -1,5 +1,5 @@
 # Rudō (流道) Theme for btop
-# Everforest color palette
+# Unified color palette
 
 # Main background, empty for terminal default, need to be empty if you want transparent background
 theme[main_bg]="#2d353b"

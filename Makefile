@@ -9,8 +9,8 @@ CONFIG_DIR := $(HOME_DIR)/.config
 ALL_DOTFILES := zshrc vimrc bashrc gemrc profile
 ALL_PRIVATE_DOTFILES := zshrc_local bashrc_local s3cfg
 
-# Directories to link
-ALL_DIRS := zsh nvim
+# Directories to link (zsh and nvim have specific targets, so not included here)
+ALL_DIRS :=
 
 # All links
 ALL_DOTFILE_LINKS := $(ALL_DOTFILES:%=$(HOME_DIR)/.%)
@@ -20,8 +20,8 @@ ALL_HYPR_LINK := $(CONFIG_DIR)/hypr
 ALL_ZSH_LINK := $(HOME_DIR)/.zsh
 ALL_PRIVATE_DOTFILE_LINKS := $(ALL_PRIVATE_DOTFILES:%=$(HOME_DIR)/.%)
 
-# Clean targets
-ALL_CLEAN := $(addprefix clean-,${ALL_DOTFILES}) $(addprefix clean-,${ALL_DIRS})
+# Clean targets (exclude zsh and nvim which have specific clean targets)
+ALL_CLEAN := $(addprefix clean-,${ALL_DOTFILES})
 
 .PHONY: all install backup check clean help
 
@@ -36,7 +36,7 @@ help:
 	@echo "  make help     - Show this help message"
 
 # Main install target
-install: backup check-zsh check-nvim $(ALL_DOTFILE_LINKS) $(ALL_DIR_LINKS) $(ALL_NVIM_LINK) $(ALL_HYPR_LINK) $(ALL_ZSH_LINK) starship-config zinit git-aliases send-plugin
+install: backup check-zsh check-nvim $(ALL_DOTFILE_LINKS) $(ALL_DIR_LINKS) $(ALL_NVIM_LINK) $(ALL_HYPR_LINK) $(ALL_ZSH_LINK) starship-config zinit git-aliases send-plugin zen-browser-theme spicetify-theme
 	@echo "✓ Installation complete!"
 	@echo "  Installed from: $(DOTFILES_DIR)"
 	@echo "  Run 'exec zsh' to start using the new configuration"
@@ -207,14 +207,57 @@ $(ALL_HYPR_LINK): $(DOTFILES_DIR)/hypr
 	fi
 	@ln -sf $(DOTFILES_DIR)/hypr $(CONFIG_DIR)/hypr
 
-# Link starship config (force overwrite)
-starship-config: $(DOTFILES_DIR)/.config/starship.toml
-	@echo "Linking starship config..."
-	@mkdir -p $(CONFIG_DIR)
-	@if [ -f $(CONFIG_DIR)/starship.toml ] || [ -L $(CONFIG_DIR)/starship.toml ]; then \
-		rm -f $(CONFIG_DIR)/starship.toml; \
+# Link starship config (force overwrite) - optional, managed by omarchy theme
+starship-config:
+	@if [ -f $(DOTFILES_DIR)/.config/starship.toml ]; then \
+		echo "Linking starship config..."; \
+		mkdir -p $(CONFIG_DIR); \
+		if [ -f $(CONFIG_DIR)/starship.toml ] || [ -L $(CONFIG_DIR)/starship.toml ]; then \
+			rm -f $(CONFIG_DIR)/starship.toml; \
+		fi; \
+		ln -sf $(DOTFILES_DIR)/.config/starship.toml $(CONFIG_DIR)/starship.toml; \
+	else \
+		echo "  ⚠ Starship config not found (managed by omarchy theme), skipping..."; \
 	fi
-	@ln -sf $(DOTFILES_DIR)/.config/starship.toml $(CONFIG_DIR)/starship.toml
+
+# Link Zen Browser userChrome.css
+zen-browser-theme: $(DOTFILES_DIR)/omarchy/themes/rudo/zen-browser/userChrome.css
+	@if [ -d "$(HOME_DIR)/.zen-browser" ]; then \
+		echo "Linking Zen Browser theme..."; \
+		ZEN_PROFILE=$$(find "$(HOME_DIR)/.zen-browser" -name "*.default-release" -type d 2>/dev/null | head -1); \
+		if [ -n "$$ZEN_PROFILE" ]; then \
+			mkdir -p "$$ZEN_PROFILE/chrome"; \
+			if [ -f "$$ZEN_PROFILE/chrome/userChrome.css" ] || [ -L "$$ZEN_PROFILE/chrome/userChrome.css" ]; then \
+				rm -f "$$ZEN_PROFILE/chrome/userChrome.css"; \
+			fi; \
+			ln -sf "$(DOTFILES_DIR)/omarchy/themes/rudo/zen-browser/userChrome.css" "$$ZEN_PROFILE/chrome/userChrome.css"; \
+			echo "  ✓ Linked to $$ZEN_PROFILE/chrome/userChrome.css"; \
+			echo "  ⚠ Enable custom CSS: Set toolkit.legacyUserProfileCustomizations.stylesheets=true in about:config"; \
+		else \
+			echo "  ⚠ Zen Browser profile not found, skipping..."; \
+		fi; \
+	else \
+		echo "  ⚠ Zen Browser not installed, skipping theme..."; \
+	fi
+
+# Link Spicetify theme
+spicetify-theme: $(DOTFILES_DIR)/omarchy/themes/rudo/spicetify
+	@if command -v spicetify >/dev/null 2>&1; then \
+		echo "Linking Spicetify theme..."; \
+		mkdir -p "$(CONFIG_DIR)/spicetify/Themes/rudo"; \
+		for file in config.ini color.ini user.css; do \
+			if [ -f "$(DOTFILES_DIR)/omarchy/themes/rudo/spicetify/$$file" ]; then \
+				if [ -f "$(CONFIG_DIR)/spicetify/Themes/rudo/$$file" ] || [ -L "$(CONFIG_DIR)/spicetify/Themes/rudo/$$file" ]; then \
+					rm -f "$(CONFIG_DIR)/spicetify/Themes/rudo/$$file"; \
+				fi; \
+				ln -sf "$(DOTFILES_DIR)/omarchy/themes/rudo/spicetify/$$file" "$(CONFIG_DIR)/spicetify/Themes/rudo/$$file"; \
+			fi; \
+		done; \
+		echo "  ✓ Spicetify theme linked"; \
+		echo "  ⚠ Run: spicetify config current_theme rudo && spicetify config color_scheme rudo && spicetify apply"; \
+	else \
+		echo "  ⚠ Spicetify not installed, skipping theme..."; \
+	fi
 
 # Link other directories (if any) (force overwrite)
 $(ALL_DIR_LINKS): $(HOME_DIR)/.%:
@@ -232,7 +275,7 @@ $(ALL_PRIVATE_DOTFILE_LINKS): $(HOME_DIR)/.%:
 	fi
 
 # Clean targets
-clean: $(ALL_CLEAN) clean-nvim clean-hypr clean-zsh
+clean: $(ALL_CLEAN) clean-nvim clean-hypr clean-zsh clean-zen-browser clean-spicetify
 	@echo "✓ Cleanup complete"
 
 $(ALL_CLEAN): clean-%:
@@ -257,6 +300,21 @@ clean-zsh:
 	@if [ -L $(HOME_DIR)/.zsh ]; then \
 		echo "Removing .zsh"; \
 		rm -f $(HOME_DIR)/.zsh; \
+	fi
+
+clean-zen-browser:
+	@if [ -d "$(HOME_DIR)/.zen-browser" ]; then \
+		ZEN_PROFILE=$$(find "$(HOME_DIR)/.zen-browser" -name "*.default-release" -type d 2>/dev/null | head -1); \
+		if [ -n "$$ZEN_PROFILE" ] && [ -L "$$ZEN_PROFILE/chrome/userChrome.css" ]; then \
+			echo "Removing Zen Browser theme"; \
+			rm -f "$$ZEN_PROFILE/chrome/userChrome.css"; \
+		fi; \
+	fi
+
+clean-spicetify:
+	@if [ -d "$(CONFIG_DIR)/spicetify/Themes/rudo" ]; then \
+		echo "Removing Spicetify theme"; \
+		rm -rf "$(CONFIG_DIR)/spicetify/Themes/rudo"; \
 	fi
 
 # Restore from backup

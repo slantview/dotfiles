@@ -1,8 +1,7 @@
 {
-  "name": "Everforest Dark",
-  "extension": "sainnhe.everforest",
+  "name": "Rudō (流道)",
   "settings": {
-    "workbench.colorTheme": "Everforest Dark",
+    "workbench.colorTheme": "Default Dark+",
     "workbench.colorCustomizations": {
       "editorCursor.foreground": "#d3c6aa",
       "editorCursor.background": "#2d353b",

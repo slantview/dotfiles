@@ -1,9 +1,18 @@
-@define-color selected-text #FF8C00;
-@define-color text #d3c6aa;
-@define-color base #2d353b;
-@define-color border #d3c6aa;
-@define-color foreground #d3c6aa;
-@define-color background #2d353b;
-@define-color saffron #FF8C00;
-@define-color accent #FF8C00;
+/* Rudō (流道) Theme - Walker CSS */
+/* See colors.txt for complete unified palette reference */
+
+/* Core Palette */
+@define-color bg-primary #2d353b;
+@define-color fg-primary #d3c6aa;
+@define-color accent-primary #FF8C00;
+
+/* Legacy aliases */
+@define-color selected-text @accent-primary;
+@define-color text @fg-primary;
+@define-color base @bg-primary;
+@define-color border @fg-primary;
+@define-color foreground @fg-primary;
+@define-color background @bg-primary;
+@define-color saffron @accent-primary;
+@define-color accent @accent-primary;
 

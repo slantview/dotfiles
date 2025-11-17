@@ -1,0 +1,264 @@
+/* Rudō (流道) Theme - Zen Browser userChrome.css */
+/* Zen Buddhism: Kanso (simplicity), Shizen (naturalness), Seijaku (tranquility) */
+/* Warm and soft green-based color palette */
+/* See colors.txt for complete unified palette reference */
+
+/* Unified Color Palette Variables */
+:root {
+  /* Core Palette - Backgrounds */
+  --bg-primary: #2d353b;
+  --bg-secondary: #272e33;
+  --bg-dark: #343f44;
+  --bg-mid: #3d484d;
+  --bg-hover: #475258;
+  
+  /* Core Palette - Foregrounds */
+  --fg-primary: #d3c6aa;
+  --fg-secondary: #859289;
+  --fg-bright: #9da9a0;
+  --fg-dim: #868d80;
+  
+  /* Core Palette - Accent */
+  --accent-primary: #FF8C00;
+  
+  /* Extended Palette - Semantic Colors */
+  --red: #e67e80;
+  --red-bright: #f85552;
+  --red-muted: #a55555;
+  --orange: #e69875;
+  --orange-muted: #d67923;
+  --orange-bright: #FFA500;
+  --yellow: #dbbc7f;
+  --green: #a7c080;
+  --green-bright: #b5da61;
+  --blue: #7fbbb3;
+  --cyan: #83c092;
+  --teal-dark: #156465;
+  --magenta: #d699b6;
+  --purple-dark: #2c244a;
+  --brown: #b87850;
+  --beige-light: #f8d094;
+  
+  /* Extended Backgrounds */
+  --bg-selection: #464e53;
+  --bg-tabbar: #2e383c;
+  --bg-tab-inactive: #374145;
+  --bg-border-inactive: #4f5b58;
+  
+  /* Legacy variable aliases (deprecated - use unified palette names above) */
+  --everforest-bg: var(--bg-primary);
+  --everforest-bg-alt: var(--bg-secondary);
+  --everforest-fg: var(--fg-primary);
+  --everforest-red: var(--red);
+  --everforest-orange: var(--orange);
+  --everforest-yellow: var(--yellow);
+  --everforest-green: var(--green);
+  --everforest-blue: var(--blue);
+  --everforest-aqua: var(--cyan);
+  --everforest-magenta: var(--magenta);
+  --everforest-black: var(--bg-dark);
+  --everforest-white: var(--fg-secondary);
+  --everforest-saffron: var(--accent-primary);
+  --everforest-light-green: var(--green-bright);
+  --everforest-dark-teal: var(--teal-dark);
+  --everforest-muted-orange: var(--orange-muted);
+  --everforest-light-beige: var(--beige-light);
+  --everforest-dark-purple: var(--purple-dark);
+  --everforest-earth-brown: var(--brown);
+}
+
+/* Main Toolbar Background */
+#navigator-toolbox {
+  background-color: var(--everforest-bg) !important;
+  border-bottom: 1px solid var(--everforest-black) !important;
+}
+
+/* Tab Bar */
+#TabsToolbar {
+  background-color: var(--everforest-bg-alt) !important;
+  border-bottom: 1px solid var(--everforest-black) !important;
+}
+
+/* Tabs */
+.tab-background {
+  background-color: var(--everforest-bg-alt) !important;
+  border: none !important;
+}
+
+.tab-background[selected="true"] {
+  background-color: var(--everforest-bg) !important;
+  border-bottom: 2px solid var(--everforest-saffron) !important;
+}
+
+.tab-label {
+  color: var(--everforest-fg) !important;
+}
+
+.tab-label[selected="true"] {
+  color: var(--everforest-fg) !important;
+  font-weight: 500 !important;
+}
+
+/* Tab Hover */
+.tab-background:hover:not([selected="true"]) {
+  background-color: var(--everforest-black) !important;
+}
+
+/* Navigation Bar */
+#nav-bar {
+  background-color: var(--everforest-bg) !important;
+  border-top: 1px solid var(--everforest-black) !important;
+}
+
+/* URL Bar */
+#urlbar {
+  background-color: var(--everforest-bg-alt) !important;
+  border: 1px solid var(--everforest-black) !important;
+  border-radius: 4px !important;
+  color: var(--everforest-fg) !important;
+}
+
+#urlbar:focus-within {
+  border-color: var(--everforest-saffron) !important;
+  box-shadow: 0 0 0 1px var(--everforest-saffron) !important;
+}
+
+#urlbar-input {
+  color: var(--everforest-fg) !important;
+}
+
+/* URL Bar Icons */
+#urlbar .urlbar-icon {
+  color: var(--everforest-white) !important;
+}
+
+/* Bookmarks Bar */
+#PersonalToolbar {
+  background-color: var(--everforest-bg-alt) !important;
+  border-bottom: 1px solid var(--everforest-black) !important;
+}
+
+/* Bookmarks */
+.bookmark-item {
+  color: var(--everforest-fg) !important;
+}
+
+.bookmark-item:hover {
+  background-color: var(--everforest-black) !important;
+  color: var(--everforest-saffron) !important;
+}
+
+/* Sidebar */
+#sidebar-box {
+  background-color: var(--everforest-bg) !important;
+}
+
+#sidebar-header {
+  background-color: var(--everforest-bg-alt) !important;
+  color: var(--everforest-fg) !important;
+  border-bottom: 1px solid var(--everforest-black) !important;
+}
+
+/* Menu Bar */
+#toolbar-menubar {
+  background-color: var(--everforest-bg-alt) !important;
+}
+
+menubar > menu {
+  color: var(--everforest-fg) !important;
+}
+
+menubar > menu:hover {
+  background-color: var(--everforest-black) !important;
+}
+
+/* Context Menu */
+menupopup {
+  background-color: var(--everforest-bg) !important;
+  border: 1px solid var(--everforest-black) !important;
+  color: var(--everforest-fg) !important;
+}
+
+menuitem:hover {
+  background-color: var(--everforest-black) !important;
+  color: var(--everforest-saffron) !important;
+}
+
+/* Buttons */
+toolbarbutton {
+  color: var(--everforest-fg) !important;
+}
+
+toolbarbutton:hover {
+  background-color: var(--everforest-black) !important;
+}
+
+toolbarbutton[open="true"] {
+  background-color: var(--everforest-black) !important;
+}
+
+/* Status Bar */
+#statusbar {
+  background-color: var(--everforest-bg-alt) !important;
+  border-top: 1px solid var(--everforest-black) !important;
+  color: var(--everforest-fg) !important;
+}
+
+/* Scrollbars */
+scrollbar {
+  width: 12px !important;
+  background-color: var(--everforest-bg) !important;
+}
+
+scrollbar thumb {
+  background-color: var(--everforest-black) !important;
+  border-radius: 6px !important;
+}
+
+scrollbar thumb:hover {
+  background-color: var(--everforest-white) !important;
+}
+
+/* Find Bar */
+findbar {
+  background-color: var(--everforest-bg-alt) !important;
+  border-top: 1px solid var(--everforest-black) !important;
+}
+
+.findbar-textbox {
+  background-color: var(--everforest-bg) !important;
+  color: var(--everforest-fg) !important;
+  border: 1px solid var(--everforest-black) !important;
+}
+
+/* Progress Bar */
+#statusbar-progress {
+  background-color: var(--everforest-saffron) !important;
+}
+
+/* Loading Indicator */
+#statusbar-icon {
+  color: var(--everforest-saffron) !important;
+}
+
+/* Security Indicators */
+#urlbar[pageproxystate="valid"] .urlbar-page-action {
+  color: var(--everforest-green) !important;
+}
+
+#urlbar[pageproxystate="valid"][issecure="true"] .urlbar-page-action {
+  color: var(--everforest-green) !important;
+}
+
+/* Remove default borders and shadows */
+* {
+  box-shadow: none !important;
+}
+
+/* Zen Browser specific - Workspace indicator */
+#zen-workspace-indicator {
+  background-color: var(--everforest-bg-alt) !important;
+  color: var(--everforest-fg) !important;
+  border: 1px solid var(--everforest-black) !important;
+}
+
