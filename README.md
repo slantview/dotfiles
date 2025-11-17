@@ -144,7 +144,6 @@ The Hyprland configuration is located in `hypr/` and includes:
 - **Visual effects** - Shaders and appearance settings
 - **Autostart** - Applications launched on startup
 - **Idle/lock** - Screen locking and power management
-- **hy3 tiling** - i3-like tiling window manager plugin
 
 The configuration is installed to `~/.config/hypr/`. After installation, restart Hyprland or reload the config with `hyprctl reload`.
 
