@@ -17,6 +17,9 @@ ALL_DOTFILE_LINKS := $(ALL_DOTFILES:%=$(HOME_DIR)/.%)
 ALL_DIR_LINKS := $(ALL_DIRS:%=$(HOME_DIR)/.%)
 ALL_NVIM_LINK := $(CONFIG_DIR)/nvim
 ALL_HYPR_LINK := $(CONFIG_DIR)/hypr
+ALL_GHOSTTY_LINK := $(CONFIG_DIR)/ghostty
+ALL_ALACRITTY_LINK := $(CONFIG_DIR)/alacritty
+ALL_KITTY_LINK := $(CONFIG_DIR)/kitty
 ALL_ZSH_LINK := $(HOME_DIR)/.zsh
 ALL_PRIVATE_DOTFILE_LINKS := $(ALL_PRIVATE_DOTFILES:%=$(HOME_DIR)/.%)
 
@@ -36,7 +39,7 @@ help:
 	@echo "  make help     - Show this help message"
 
 # Main install target
-install: backup check-zsh check-nvim $(ALL_DOTFILE_LINKS) $(ALL_DIR_LINKS) $(ALL_NVIM_LINK) $(ALL_HYPR_LINK) $(ALL_ZSH_LINK) starship-config zinit git-aliases send-plugin zen-browser-theme spicetify-theme
+install: backup check-zsh check-nvim $(ALL_DOTFILE_LINKS) $(ALL_DIR_LINKS) $(ALL_NVIM_LINK) $(ALL_HYPR_LINK) $(ALL_GHOSTTY_LINK) $(ALL_ALACRITTY_LINK) $(ALL_KITTY_LINK) $(ALL_ZSH_LINK) starship-config zinit git-aliases send-plugin zen-browser-theme spicetify-theme
 	@echo "✓ Installation complete!"
 	@echo "  Installed from: $(DOTFILES_DIR)"
 	@echo "  Run 'exec zsh' to start using the new configuration"
@@ -93,6 +96,33 @@ backup:
 			tar -czf $(HOME_DIR)/.dotfiles-backup/hypr.backup.tar.gz -C $(CONFIG_DIR) hypr 2>/dev/null || true; \
 		else \
 			tar -czf $(HOME_DIR)/.dotfiles-backup/hypr.backup.tar.gz -C $(CONFIG_DIR) hypr 2>/dev/null || true; \
+		fi; \
+	fi
+	@if [ -d $(CONFIG_DIR)/ghostty ] || [ -L $(CONFIG_DIR)/ghostty ]; then \
+		echo "  Backing up ghostty config"; \
+		if [ -L $(CONFIG_DIR)/ghostty ]; then \
+			rm -f $(HOME_DIR)/.dotfiles-backup/ghostty.backup.tar.gz; \
+			tar -czf $(HOME_DIR)/.dotfiles-backup/ghostty.backup.tar.gz -C $(CONFIG_DIR) ghostty 2>/dev/null || true; \
+		else \
+			tar -czf $(HOME_DIR)/.dotfiles-backup/ghostty.backup.tar.gz -C $(CONFIG_DIR) ghostty 2>/dev/null || true; \
+		fi; \
+	fi
+	@if [ -d $(CONFIG_DIR)/alacritty ] || [ -L $(CONFIG_DIR)/alacritty ]; then \
+		echo "  Backing up alacritty config"; \
+		if [ -L $(CONFIG_DIR)/alacritty ]; then \
+			rm -f $(HOME_DIR)/.dotfiles-backup/alacritty.backup.tar.gz; \
+			tar -czf $(HOME_DIR)/.dotfiles-backup/alacritty.backup.tar.gz -C $(CONFIG_DIR) alacritty 2>/dev/null || true; \
+		else \
+			tar -czf $(HOME_DIR)/.dotfiles-backup/alacritty.backup.tar.gz -C $(CONFIG_DIR) alacritty 2>/dev/null || true; \
+		fi; \
+	fi
+	@if [ -d $(CONFIG_DIR)/kitty ] || [ -L $(CONFIG_DIR)/kitty ]; then \
+		echo "  Backing up kitty config"; \
+		if [ -L $(CONFIG_DIR)/kitty ]; then \
+			rm -f $(HOME_DIR)/.dotfiles-backup/kitty.backup.tar.gz; \
+			tar -czf $(HOME_DIR)/.dotfiles-backup/kitty.backup.tar.gz -C $(CONFIG_DIR) kitty 2>/dev/null || true; \
+		else \
+			tar -czf $(HOME_DIR)/.dotfiles-backup/kitty.backup.tar.gz -C $(CONFIG_DIR) kitty 2>/dev/null || true; \
 		fi; \
 	fi
 	@echo "✓ Backups created in $(HOME_DIR)/.dotfiles-backup/"
@@ -207,6 +237,33 @@ $(ALL_HYPR_LINK): $(DOTFILES_DIR)/hypr
 	fi
 	@ln -sf $(DOTFILES_DIR)/hypr $(CONFIG_DIR)/hypr
 
+# Link ghostty directory (force overwrite)
+$(ALL_GHOSTTY_LINK): $(DOTFILES_DIR)/ghostty
+	@echo "Linking ghostty directory..."
+	@mkdir -p $(CONFIG_DIR)
+	@if [ -d $(CONFIG_DIR)/ghostty ] || [ -L $(CONFIG_DIR)/ghostty ]; then \
+		rm -rf $(CONFIG_DIR)/ghostty; \
+	fi
+	@ln -sf $(DOTFILES_DIR)/ghostty $(CONFIG_DIR)/ghostty
+
+# Link alacritty directory (force overwrite)
+$(ALL_ALACRITTY_LINK): $(DOTFILES_DIR)/alacritty
+	@echo "Linking alacritty directory..."
+	@mkdir -p $(CONFIG_DIR)
+	@if [ -d $(CONFIG_DIR)/alacritty ] || [ -L $(CONFIG_DIR)/alacritty ]; then \
+		rm -rf $(CONFIG_DIR)/alacritty; \
+	fi
+	@ln -sf $(DOTFILES_DIR)/alacritty $(CONFIG_DIR)/alacritty
+
+# Link kitty directory (force overwrite)
+$(ALL_KITTY_LINK): $(DOTFILES_DIR)/kitty
+	@echo "Linking kitty directory..."
+	@mkdir -p $(CONFIG_DIR)
+	@if [ -d $(CONFIG_DIR)/kitty ] || [ -L $(CONFIG_DIR)/kitty ]; then \
+		rm -rf $(CONFIG_DIR)/kitty; \
+	fi
+	@ln -sf $(DOTFILES_DIR)/kitty $(CONFIG_DIR)/kitty
+
 # Link starship config (force overwrite) - optional, managed by omarchy theme
 starship-config:
 	@if [ -f $(DOTFILES_DIR)/.config/starship.toml ]; then \
@@ -275,7 +332,7 @@ $(ALL_PRIVATE_DOTFILE_LINKS): $(HOME_DIR)/.%:
 	fi
 
 # Clean targets
-clean: $(ALL_CLEAN) clean-nvim clean-hypr clean-zsh clean-zen-browser clean-spicetify
+clean: $(ALL_CLEAN) clean-nvim clean-hypr clean-ghostty clean-alacritty clean-kitty clean-zsh clean-zen-browser clean-spicetify
 	@echo "✓ Cleanup complete"
 
 $(ALL_CLEAN): clean-%:
@@ -294,6 +351,24 @@ clean-hypr:
 	@if [ -L $(CONFIG_DIR)/hypr ]; then \
 		echo "Removing hypr config"; \
 		rm -f $(CONFIG_DIR)/hypr; \
+	fi
+
+clean-ghostty:
+	@if [ -L $(CONFIG_DIR)/ghostty ]; then \
+		echo "Removing ghostty config"; \
+		rm -f $(CONFIG_DIR)/ghostty; \
+	fi
+
+clean-alacritty:
+	@if [ -L $(CONFIG_DIR)/alacritty ]; then \
+		echo "Removing alacritty config"; \
+		rm -f $(CONFIG_DIR)/alacritty; \
+	fi
+
+clean-kitty:
+	@if [ -L $(CONFIG_DIR)/kitty ]; then \
+		echo "Removing kitty config"; \
+		rm -f $(CONFIG_DIR)/kitty; \
 	fi
 
 clean-zsh:
@@ -353,6 +428,24 @@ restore:
 			mkdir -p $(CONFIG_DIR); \
 			rm -rf $(CONFIG_DIR)/hypr; \
 			tar -xzf $(HOME_DIR)/.dotfiles-backup/hypr.backup.tar.gz -C $(CONFIG_DIR); \
+		fi; \
+		if [ -f $(HOME_DIR)/.dotfiles-backup/ghostty.backup.tar.gz ]; then \
+			echo "  Restoring ghostty config"; \
+			mkdir -p $(CONFIG_DIR); \
+			rm -rf $(CONFIG_DIR)/ghostty; \
+			tar -xzf $(HOME_DIR)/.dotfiles-backup/ghostty.backup.tar.gz -C $(CONFIG_DIR); \
+		fi; \
+		if [ -f $(HOME_DIR)/.dotfiles-backup/alacritty.backup.tar.gz ]; then \
+			echo "  Restoring alacritty config"; \
+			mkdir -p $(CONFIG_DIR); \
+			rm -rf $(CONFIG_DIR)/alacritty; \
+			tar -xzf $(HOME_DIR)/.dotfiles-backup/alacritty.backup.tar.gz -C $(CONFIG_DIR); \
+		fi; \
+		if [ -f $(HOME_DIR)/.dotfiles-backup/kitty.backup.tar.gz ]; then \
+			echo "  Restoring kitty config"; \
+			mkdir -p $(CONFIG_DIR); \
+			rm -rf $(CONFIG_DIR)/kitty; \
+			tar -xzf $(HOME_DIR)/.dotfiles-backup/kitty.backup.tar.gz -C $(CONFIG_DIR); \
 		fi; \
 		echo "✓ Restore complete"; \
 	else \
