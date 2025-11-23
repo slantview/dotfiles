@@ -264,17 +264,17 @@ $(ALL_KITTY_LINK): $(DOTFILES_DIR)/kitty
 	fi
 	@ln -sf $(DOTFILES_DIR)/kitty $(CONFIG_DIR)/kitty
 
-# Link starship config (force overwrite) - optional, managed by omarchy theme
+# Link starship config (force overwrite)
 starship-config:
-	@if [ -f $(DOTFILES_DIR)/.config/starship.toml ]; then \
+	@if [ -f $(DOTFILES_DIR)/starship/starship.toml ]; then \
 		echo "Linking starship config..."; \
 		mkdir -p $(CONFIG_DIR); \
 		if [ -f $(CONFIG_DIR)/starship.toml ] || [ -L $(CONFIG_DIR)/starship.toml ]; then \
 			rm -f $(CONFIG_DIR)/starship.toml; \
 		fi; \
-		ln -sf $(DOTFILES_DIR)/.config/starship.toml $(CONFIG_DIR)/starship.toml; \
+		ln -sf $(DOTFILES_DIR)/starship/starship.toml $(CONFIG_DIR)/starship.toml; \
 	else \
-		echo "  ⚠ Starship config not found (managed by omarchy theme), skipping..."; \
+		echo "  ⚠ Starship config not found, skipping..."; \
 	fi
 
 # Link Zen Browser userChrome.css
@@ -332,7 +332,7 @@ $(ALL_PRIVATE_DOTFILE_LINKS): $(HOME_DIR)/.%:
 	fi
 
 # Clean targets
-clean: $(ALL_CLEAN) clean-nvim clean-hypr clean-ghostty clean-alacritty clean-kitty clean-zsh clean-zen-browser clean-spicetify
+clean: $(ALL_CLEAN) clean-nvim clean-hypr clean-ghostty clean-alacritty clean-kitty clean-zsh clean-starship clean-zen-browser clean-spicetify
 	@echo "✓ Cleanup complete"
 
 $(ALL_CLEAN): clean-%:
@@ -375,6 +375,12 @@ clean-zsh:
 	@if [ -L $(HOME_DIR)/.zsh ]; then \
 		echo "Removing .zsh"; \
 		rm -f $(HOME_DIR)/.zsh; \
+	fi
+
+clean-starship:
+	@if [ -L $(CONFIG_DIR)/starship.toml ]; then \
+		echo "Removing starship config"; \
+		rm -f $(CONFIG_DIR)/starship.toml; \
 	fi
 
 clean-zen-browser:
