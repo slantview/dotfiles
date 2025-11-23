@@ -59,3 +59,4 @@ known_hosts
 
 # Project-specific
 incoming/*
+CLAUDE.md
