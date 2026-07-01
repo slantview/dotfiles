@@ -43,11 +43,6 @@ keymap("x", "<leader>p", '"_dP', opts)
 keymap("n", "<leader>d", '"_d', opts)
 keymap("v", "<leader>d", '"_d', opts)
 
--- Yank to system clipboard
-keymap("n", "<leader>y", '"+y', opts)
-keymap("v", "<leader>y", '"+y', opts)
-keymap("n", "<leader>Y", '"+Y', opts)
-
 -- Search and replace
 keymap("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], opts)
 

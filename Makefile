@@ -4,6 +4,7 @@
 DOTFILES_DIR := $(shell pwd)
 HOME_DIR := $(HOME)
 CONFIG_DIR := $(HOME_DIR)/.config
+UNAME := $(shell uname -s)
 
 # Dotfiles to link
 ALL_DOTFILES := zshrc vimrc bashrc gemrc profile
@@ -17,7 +18,7 @@ ALL_DOTFILE_LINKS := $(ALL_DOTFILES:%=$(HOME_DIR)/.%)
 ALL_DIR_LINKS := $(ALL_DIRS:%=$(HOME_DIR)/.%)
 ALL_NVIM_LINK := $(CONFIG_DIR)/nvim
 ALL_HYPR_LINK := $(CONFIG_DIR)/hypr
-ALL_GHOSTTY_LINK := $(CONFIG_DIR)/ghostty
+ALL_GHOSTTY_LINK := ghostty-link
 ALL_ALACRITTY_LINK := $(CONFIG_DIR)/alacritty
 ALL_KITTY_LINK := $(CONFIG_DIR)/kitty
 ALL_ZSH_LINK := $(HOME_DIR)/.zsh
@@ -26,20 +27,21 @@ ALL_PRIVATE_DOTFILE_LINKS := $(ALL_PRIVATE_DOTFILES:%=$(HOME_DIR)/.%)
 # Clean targets (exclude zsh and nvim which have specific clean targets)
 ALL_CLEAN := $(addprefix clean-,${ALL_DOTFILES})
 
-.PHONY: all install backup check clean help
+.PHONY: all install backup check clean help ghostty-link agents clean-agents
 
 all: install
 
 help:
 	@echo "Available targets:"
 	@echo "  make install  - Install all dotfiles (with backup)"
+	@echo "  make agents   - Link agent instruction files (Claude/Gemini/Codex/opencode)"
 	@echo "  make backup   - Backup existing dotfiles"
 	@echo "  make check    - Validate dotfiles configuration"
 	@echo "  make clean    - Remove all symlinks"
 	@echo "  make help     - Show this help message"
 
 # Main install target
-install: backup check-zsh check-nvim $(ALL_DOTFILE_LINKS) $(ALL_DIR_LINKS) $(ALL_NVIM_LINK) $(ALL_HYPR_LINK) $(ALL_GHOSTTY_LINK) $(ALL_ALACRITTY_LINK) $(ALL_KITTY_LINK) $(ALL_ZSH_LINK) starship-config zinit git-aliases send-plugin zen-browser-theme spicetify-theme
+install: backup check-zsh check-nvim $(ALL_DOTFILE_LINKS) $(ALL_DIR_LINKS) $(ALL_NVIM_LINK) $(ALL_HYPR_LINK) $(ALL_GHOSTTY_LINK) $(ALL_ALACRITTY_LINK) $(ALL_KITTY_LINK) $(ALL_ZSH_LINK) starship-config zinit git-aliases send-plugin zen-browser-theme spicetify-theme agents
 	@echo "✓ Installation complete!"
 	@echo "  Installed from: $(DOTFILES_DIR)"
 	@echo "  Run 'exec zsh' to start using the new configuration"
@@ -98,14 +100,14 @@ backup:
 			tar -czf $(HOME_DIR)/.dotfiles-backup/hypr.backup.tar.gz -C $(CONFIG_DIR) hypr 2>/dev/null || true; \
 		fi; \
 	fi
-	@if [ -d $(CONFIG_DIR)/ghostty ] || [ -L $(CONFIG_DIR)/ghostty ]; then \
+	@GHOSTTY_DIR="$(CONFIG_DIR)/ghostty"; \
+	if [ "$(UNAME)" = "Darwin" ]; then \
+		GHOSTTY_DIR="$(HOME_DIR)/Library/Application Support/com.mitchellh.ghostty"; \
+	fi; \
+	if [ -d "$$GHOSTTY_DIR" ] || [ -L "$$GHOSTTY_DIR" ]; then \
 		echo "  Backing up ghostty config"; \
-		if [ -L $(CONFIG_DIR)/ghostty ]; then \
-			rm -f $(HOME_DIR)/.dotfiles-backup/ghostty.backup.tar.gz; \
-			tar -czf $(HOME_DIR)/.dotfiles-backup/ghostty.backup.tar.gz -C $(CONFIG_DIR) ghostty 2>/dev/null || true; \
-		else \
-			tar -czf $(HOME_DIR)/.dotfiles-backup/ghostty.backup.tar.gz -C $(CONFIG_DIR) ghostty 2>/dev/null || true; \
-		fi; \
+		rm -f $(HOME_DIR)/.dotfiles-backup/ghostty.backup.tar.gz; \
+		tar -czf "$(HOME_DIR)/.dotfiles-backup/ghostty.backup.tar.gz" -C "$$(dirname "$$GHOSTTY_DIR")" "$$(basename "$$GHOSTTY_DIR")" 2>/dev/null || true; \
 	fi
 	@if [ -d $(CONFIG_DIR)/alacritty ] || [ -L $(CONFIG_DIR)/alacritty ]; then \
 		echo "  Backing up alacritty config"; \
@@ -166,6 +168,13 @@ check: check-zsh check-nvim
 	else \
 		echo "✓ Found directory: hypr"; \
 	fi
+	@for file in AGENTS.md OPINIONS.md VOICE.md; do \
+		if [ ! -f $(DOTFILES_DIR)/agents/$$file ]; then \
+			echo "✗ Missing: agents/$$file"; \
+		else \
+			echo "✓ Found: agents/$$file"; \
+		fi; \
+	done
 	@echo "✓ Validation complete"
 
 # Install zinit (lightweight zsh plugin manager)
@@ -238,13 +247,24 @@ $(ALL_HYPR_LINK): $(DOTFILES_DIR)/hypr
 	@ln -sf $(DOTFILES_DIR)/hypr $(CONFIG_DIR)/hypr
 
 # Link ghostty directory (force overwrite)
-$(ALL_GHOSTTY_LINK): $(DOTFILES_DIR)/ghostty
+# On macOS, Ghostty uses ~/Library/Application Support/com.mitchellh.ghostty/
+# On Linux, Ghostty uses ~/.config/ghostty/
+ghostty-link:
+ifeq ($(UNAME),Darwin)
+	@echo "Linking ghostty directory (macOS)..."
+	@mkdir -p "$(HOME_DIR)/Library/Application Support"
+	@if [ -d "$(HOME_DIR)/Library/Application Support/com.mitchellh.ghostty" ] || [ -L "$(HOME_DIR)/Library/Application Support/com.mitchellh.ghostty" ]; then \
+		rm -rf "$(HOME_DIR)/Library/Application Support/com.mitchellh.ghostty"; \
+	fi
+	@ln -sf "$(DOTFILES_DIR)/ghostty" "$(HOME_DIR)/Library/Application Support/com.mitchellh.ghostty"
+else
 	@echo "Linking ghostty directory..."
 	@mkdir -p $(CONFIG_DIR)
 	@if [ -d $(CONFIG_DIR)/ghostty ] || [ -L $(CONFIG_DIR)/ghostty ]; then \
 		rm -rf $(CONFIG_DIR)/ghostty; \
 	fi
 	@ln -sf $(DOTFILES_DIR)/ghostty $(CONFIG_DIR)/ghostty
+endif
 
 # Link alacritty directory (force overwrite)
 $(ALL_ALACRITTY_LINK): $(DOTFILES_DIR)/alacritty
@@ -316,6 +336,36 @@ spicetify-theme: $(DOTFILES_DIR)/omarchy/themes/rudo/spicetify
 		echo "  ⚠ Spicetify not installed, skipping theme..."; \
 	fi
 
+# Link agent instruction files for AI coding tools (force overwrite).
+# agents/AGENTS.md is the primary instruction file; it references ~/OPINIONS.md
+# and ~/VOICE.md, so those are linked into $HOME. AGENTS.md is then linked to
+# each tool's expected global-instructions filename:
+#   Claude Code -> ~/.claude/CLAUDE.md
+#   Gemini CLI  -> ~/.gemini/GEMINI.md
+#   Codex CLI   -> ~/.codex/AGENTS.md
+#   opencode    -> ~/.config/opencode/AGENTS.md
+agents:
+	@echo "Linking agent instruction files..."
+	@mkdir -p $(HOME_DIR)/.dotfiles-backup
+	@for pair in \
+		"OPINIONS.md:$(HOME_DIR)/OPINIONS.md" \
+		"VOICE.md:$(HOME_DIR)/VOICE.md" \
+		"AGENTS.md:$(HOME_DIR)/.claude/CLAUDE.md" \
+		"AGENTS.md:$(HOME_DIR)/.gemini/GEMINI.md" \
+		"AGENTS.md:$(HOME_DIR)/.codex/AGENTS.md" \
+		"AGENTS.md:$(CONFIG_DIR)/opencode/AGENTS.md"; do \
+		src="$(DOTFILES_DIR)/agents/$${pair%%:*}"; \
+		dest="$${pair#*:}"; \
+		mkdir -p "$$(dirname "$$dest")"; \
+		if [ -f "$$dest" ] && [ ! -L "$$dest" ]; then \
+			echo "  Backing up existing $$(basename "$$dest")"; \
+			cp "$$dest" "$(HOME_DIR)/.dotfiles-backup/$$(basename "$$dest").backup"; \
+		fi; \
+		rm -f "$$dest"; \
+		ln -sf "$$src" "$$dest"; \
+		echo "  ✓ $$dest -> $$src"; \
+	done
+
 # Link other directories (if any) (force overwrite)
 $(ALL_DIR_LINKS): $(HOME_DIR)/.%:
 	@echo "Linking $* directory..."
@@ -332,7 +382,7 @@ $(ALL_PRIVATE_DOTFILE_LINKS): $(HOME_DIR)/.%:
 	fi
 
 # Clean targets
-clean: $(ALL_CLEAN) clean-nvim clean-hypr clean-ghostty clean-alacritty clean-kitty clean-zsh clean-starship clean-zen-browser clean-spicetify
+clean: $(ALL_CLEAN) clean-nvim clean-hypr clean-ghostty clean-alacritty clean-kitty clean-zsh clean-starship clean-zen-browser clean-spicetify clean-agents
 	@echo "✓ Cleanup complete"
 
 $(ALL_CLEAN): clean-%:
@@ -354,10 +404,17 @@ clean-hypr:
 	fi
 
 clean-ghostty:
+ifeq ($(UNAME),Darwin)
+	@if [ -L "$(HOME_DIR)/Library/Application Support/com.mitchellh.ghostty" ]; then \
+		echo "Removing ghostty config"; \
+		rm -f "$(HOME_DIR)/Library/Application Support/com.mitchellh.ghostty"; \
+	fi
+else
 	@if [ -L $(CONFIG_DIR)/ghostty ]; then \
 		echo "Removing ghostty config"; \
 		rm -f $(CONFIG_DIR)/ghostty; \
 	fi
+endif
 
 clean-alacritty:
 	@if [ -L $(CONFIG_DIR)/alacritty ]; then \
@@ -398,6 +455,20 @@ clean-spicetify:
 		rm -rf "$(CONFIG_DIR)/spicetify/Themes/rudo"; \
 	fi
 
+clean-agents:
+	@for dest in \
+		"$(HOME_DIR)/OPINIONS.md" \
+		"$(HOME_DIR)/VOICE.md" \
+		"$(HOME_DIR)/.claude/CLAUDE.md" \
+		"$(HOME_DIR)/.gemini/GEMINI.md" \
+		"$(HOME_DIR)/.codex/AGENTS.md" \
+		"$(CONFIG_DIR)/opencode/AGENTS.md"; do \
+		if [ -L "$$dest" ]; then \
+			echo "Removing $$dest"; \
+			rm -f "$$dest"; \
+		fi; \
+	done
+
 # Restore from backup
 restore:
 	@if [ -d $(HOME_DIR)/.dotfiles-backup ]; then \
@@ -437,9 +508,15 @@ restore:
 		fi; \
 		if [ -f $(HOME_DIR)/.dotfiles-backup/ghostty.backup.tar.gz ]; then \
 			echo "  Restoring ghostty config"; \
-			mkdir -p $(CONFIG_DIR); \
-			rm -rf $(CONFIG_DIR)/ghostty; \
-			tar -xzf $(HOME_DIR)/.dotfiles-backup/ghostty.backup.tar.gz -C $(CONFIG_DIR); \
+			if [ "$(UNAME)" = "Darwin" ]; then \
+				mkdir -p "$(HOME_DIR)/Library/Application Support"; \
+				rm -rf "$(HOME_DIR)/Library/Application Support/com.mitchellh.ghostty"; \
+				tar -xzf "$(HOME_DIR)/.dotfiles-backup/ghostty.backup.tar.gz" -C "$(HOME_DIR)/Library/Application Support"; \
+			else \
+				mkdir -p $(CONFIG_DIR); \
+				rm -rf $(CONFIG_DIR)/ghostty; \
+				tar -xzf $(HOME_DIR)/.dotfiles-backup/ghostty.backup.tar.gz -C $(CONFIG_DIR); \
+			fi; \
 		fi; \
 		if [ -f $(HOME_DIR)/.dotfiles-backup/alacritty.backup.tar.gz ]; then \
 			echo "  Restoring alacritty config"; \
