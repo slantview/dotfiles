@@ -29,6 +29,18 @@ export PATH=/Users/steverude/.opencode/bin:$PATH
 export PATH="$PATH:/Users/steverude/.lmstudio/bin"
 # End of LM Studio CLI section
 
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/steverude/.docker/completions $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions
+
+# bun completions
+[ -s "/Users/steverude/.bun/_bun" ] && source "/Users/steverude/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
 
 # pnpm
 export PNPM_HOME="/Users/steverude/Library/pnpm"

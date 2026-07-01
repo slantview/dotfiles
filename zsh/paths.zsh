@@ -28,6 +28,8 @@ append_to_path() {
 prepend_to_path "$HOME/bin"
 prepend_to_path "$HOME/.local/bin"
 
+export GOPATH=$(go env GOPATH)
+
 # Go paths
 if [[ -n "$GOROOT" ]] && [[ -d "$GOROOT/bin" ]]; then
   prepend_to_path "$GOROOT/bin"
@@ -46,10 +48,10 @@ if [[ "$IS_MACOS" == "true" ]]; then
     prepend_to_path "$HOMEBREW_PREFIX/opt/node@12/bin"
     prepend_to_path "$HOMEBREW_PREFIX/opt/postgresql@12/bin"
   fi
-  
+
   prepend_to_path "/opt/boxen/homebrew/bin"
   prepend_to_path "/Applications/Vagrant/bin"
-  
+
 elif [[ "$IS_LINUX" == "true" ]] || [[ "$IS_WSL" == "true" ]]; then
   # Linux/WSL paths
   prepend_to_path "/usr/local/bin"
@@ -82,6 +84,10 @@ fi
 # Google Cloud SDK
 if [[ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]]; then
   source "$HOME/google-cloud-sdk/path.zsh.inc"
+fi
+
+if [[ -f "$HOME/bin" ]]; then
+    append_to_path "$HOME/bin"
 fi
 
 # Clean up functions (no longer needed after PATH is set)

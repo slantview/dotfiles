@@ -111,3 +111,4 @@ else
   PROMPT='%F{green}%n@%m%f %F{blue}%~%f%F{yellow}${vcs_info_msg_0_}%f $ '
 fi
 
+setopt interactive_comments
