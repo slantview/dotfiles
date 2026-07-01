@@ -134,3 +134,8 @@ unset -f prepend_to_path
 
 # Source local overrides (if exists)
 [[ -f "$HOME/.bashrc_local" ]] && source "$HOME/.bashrc_local"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/steverude/.lmstudio/bin"
+# End of LM Studio CLI section
+

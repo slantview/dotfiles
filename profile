@@ -33,3 +33,8 @@ load_nvm() {
 # Uncomment the lines below if you want them to load automatically:
 # load_conda
 # load_nvm
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/steverude/.lmstudio/bin"
+# End of LM Studio CLI section
+

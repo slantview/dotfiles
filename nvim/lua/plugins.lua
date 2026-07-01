@@ -71,7 +71,6 @@ require("lazy").setup({
       -- Build list of LSPs to install
       local lsp_servers = { "pyright", "ts_ls" }
       -- Only add gopls if Go is available and working
-      -- Check if go command works (not just if it exists)
       local go_works = false
       if vim.fn.executable("go") == 1 then
         local handle = io.popen("go version 2>&1")
@@ -88,7 +87,7 @@ require("lazy").setup({
       end
       require("mason-lspconfig").setup({
         ensure_installed = lsp_servers,
-        automatic_installation = true,
+        automatic_enable = true,
       })
     end,
   },
@@ -98,18 +97,16 @@ require("lazy").setup({
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
     event = { "BufReadPost", "BufNewFile" },
-    config = function()
-      local configs = require("nvim-treesitter.configs")
-      configs.setup({
-        ensure_installed = { "go", "python", "javascript", "typescript", "lua", "vim", "bash" },
-        highlight = {
-          enable = true,
-        },
-        indent = {
-          enable = true,
-        },
-      })
-    end,
+    main = "nvim-treesitter.configs",
+    opts = {
+      ensure_installed = { "go", "python", "javascript", "typescript", "lua", "vim", "bash" },
+      highlight = {
+        enable = true,
+      },
+      indent = {
+        enable = true,
+      },
+    },
   },
 
   -- Autocompletion

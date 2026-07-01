@@ -5,7 +5,6 @@ local g = vim.g
 
 -- General settings
 opt.mouse = "a"                    -- Enable mouse support
-opt.clipboard = "unnamedplus"      -- Use system clipboard
 opt.swapfile = false               -- Disable swap files
 opt.backup = false                 -- Disable backup files
 opt.undofile = true                -- Enable persistent undo
@@ -45,11 +44,6 @@ opt.timeoutlen = 300               -- Time to wait for mapped sequence
 -- Colorscheme
 opt.termguicolors = true           -- Enable 24-bit RGB colors
 -- Colorscheme is set by the everforest-nvim plugin (see plugins.lua)
-
--- File type detection
-opt.filetype.on = true
-vim.cmd("filetype plugin on")
-vim.cmd("filetype indent on")
 
 -- Go specific settings (vim-go compatibility)
 g.go_fmt_command = "goimports"

@@ -1,33 +1,5 @@
-# Dynamic theme colors
-config-file = ?"~/.config/omarchy/current/theme/ghostty.conf"
+# Ghostty Configuration
+# Platform-specific configs: macos.conf, linux.conf, windows.conf
+# Symlink the appropriate one or include directly below
 
-# Font
-font-family = "JetBrainsMono Nerd Font"
-font-style = Medium
-font-size = 10
-
-# Window
-window-theme = ghostty
-window-padding-x = 14
-window-padding-y = 8
-confirm-close-surface=false
-resize-overlay = never
-gtk-toolbar-style = flat
-
-# Cursor styling
-cursor-style = "block"
-cursor-style-blink = false
-shell-integration-features = no-cursor
-
-# Shell integration
-shell-integration = zsh
-
-# Keyboard bindings
-keybind = shift+insert=paste_from_clipboard
-keybind = control+insert=copy_to_clipboard
-
-# SSH session terminfo
-shell-integration-features = ssh-env
-
-# Slowdown mouse scrolling
-mouse-scroll-multiplier = 0.95
+config-file = macos.conf
