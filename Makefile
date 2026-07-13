@@ -257,6 +257,11 @@ ifeq ($(UNAME),Darwin)
 		rm -rf "$(HOME_DIR)/Library/Application Support/com.mitchellh.ghostty"; \
 	fi
 	@ln -sf "$(DOTFILES_DIR)/ghostty" "$(HOME_DIR)/Library/Application Support/com.mitchellh.ghostty"
+	@# Ghostty also reads ~/.config/ghostty on macOS; a stale symlink there double-loads the config chain ("cycle detected").
+	@if [ -L $(CONFIG_DIR)/ghostty ]; then \
+		echo "Removing stale ~/.config/ghostty symlink (avoids config cycle on macOS)"; \
+		rm -f $(CONFIG_DIR)/ghostty; \
+	fi
 else
 	@echo "Linking ghostty directory..."
 	@mkdir -p $(CONFIG_DIR)
@@ -408,6 +413,10 @@ ifeq ($(UNAME),Darwin)
 	@if [ -L "$(HOME_DIR)/Library/Application Support/com.mitchellh.ghostty" ]; then \
 		echo "Removing ghostty config"; \
 		rm -f "$(HOME_DIR)/Library/Application Support/com.mitchellh.ghostty"; \
+	fi
+	@if [ -L $(CONFIG_DIR)/ghostty ]; then \
+		echo "Removing stale ~/.config/ghostty symlink"; \
+		rm -f $(CONFIG_DIR)/ghostty; \
 	fi
 else
 	@if [ -L $(CONFIG_DIR)/ghostty ]; then \
