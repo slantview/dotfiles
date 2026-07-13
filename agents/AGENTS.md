@@ -19,6 +19,19 @@ These are common instructions for all agents for Steve Rude.
   If you see one, even if it is not caused by what you are working on right now, still get it fixed.
 - Prefer our own libraries first before considering other's projects. Github repos from a3tai, rudecompany, slantview, kingpinsec are all mine.
 
+## Mandatory Git Worktree Workflow
+
+- Treat every Git repository's primary checkout as read-only.
+- Before running any command that can edit, generate, format, stage, commit, or otherwise change repository files, create or enter a dedicated linked worktree for the task.
+- Create each task worktree on a fresh branch from the current upstream default branch after fetching the latest remote refs.
+- Keep linked worktrees outside the primary checkout, and use one coherent task or pull request per worktree.
+- Use the primary checkout only for read-only discovery, fetching refs, and managing linked worktrees.
+- Run implementation, generators, formatters, mutating tests, staging, commits, pushes, and pull request preparation only from the task worktree.
+- If the primary checkout contains changes, preserve them exactly.
+  Never stash, reset, clean, move, delete, or mix those changes into the current task.
+- Port any useful changes found in a primary checkout into a separate fresh worktree and publish them independently.
+- If a suitable linked worktree cannot be created or verified, stop and report the blocker instead of editing the primary checkout.
+
 
 ## Steve's Opinions
 

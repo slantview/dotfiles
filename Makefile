@@ -5,6 +5,8 @@ DOTFILES_DIR := $(shell pwd)
 HOME_DIR := $(HOME)
 CONFIG_DIR := $(HOME_DIR)/.config
 UNAME := $(shell uname -s)
+CLAUDE_SKILLS_SOURCE_DIR := $(DOTFILES_DIR)/agents/claude-skills
+CLAUDE_SKILLS_DIR := $(HOME_DIR)/.claude/skills
 
 # Dotfiles to link
 ALL_DOTFILES := zshrc vimrc bashrc gemrc profile
@@ -27,7 +29,7 @@ ALL_PRIVATE_DOTFILE_LINKS := $(ALL_PRIVATE_DOTFILES:%=$(HOME_DIR)/.%)
 # Clean targets (exclude zsh and nvim which have specific clean targets)
 ALL_CLEAN := $(addprefix clean-,${ALL_DOTFILES})
 
-.PHONY: all install backup check clean help ghostty-link agents clean-agents
+.PHONY: all install backup check clean help ghostty-link agents claude-skills clean-agents clean-claude-skills
 
 all: install
 
@@ -35,6 +37,7 @@ help:
 	@echo "Available targets:"
 	@echo "  make install  - Install all dotfiles (with backup)"
 	@echo "  make agents   - Link agent instruction files (Claude/Gemini/Codex/opencode)"
+	@echo "  make claude-skills - Link user-owned Claude skills"
 	@echo "  make backup   - Backup existing dotfiles"
 	@echo "  make check    - Validate dotfiles configuration"
 	@echo "  make clean    - Remove all symlinks"
@@ -173,6 +176,16 @@ check: check-zsh check-nvim
 			echo "✗ Missing: agents/$$file"; \
 		else \
 			echo "✓ Found: agents/$$file"; \
+		fi; \
+	done
+	@if [ ! -d $(CLAUDE_SKILLS_SOURCE_DIR) ]; then \
+		echo "✗ Missing directory: agents/claude-skills"; \
+		exit 1; \
+	fi
+	@for skill in $(CLAUDE_SKILLS_SOURCE_DIR)/*; do \
+		if [ -d "$$skill" ] && [ ! -f "$$skill/SKILL.md" ]; then \
+			echo "✗ Missing: agents/claude-skills/$$(basename "$$skill")/SKILL.md"; \
+			exit 1; \
 		fi; \
 	done
 	@echo "✓ Validation complete"
@@ -336,6 +349,28 @@ spicetify-theme: $(DOTFILES_DIR)/omarchy/themes/rudo/spicetify
 		echo "  ⚠ Spicetify not installed, skipping theme..."; \
 	fi
 
+# Link user-owned Claude skills without replacing unowned installed skills.
+claude-skills:
+	@echo "Linking user-owned Claude skills..."
+	@mkdir -p $(CLAUDE_SKILLS_DIR)
+	@for skill in $(CLAUDE_SKILLS_SOURCE_DIR)/*; do \
+		if [ ! -d "$$skill" ]; then \
+			continue; \
+		fi; \
+		name="$$(basename "$$skill")"; \
+		dest="$(CLAUDE_SKILLS_DIR)/$$name"; \
+		if [ -L "$$dest" ] && [ "$$(readlink "$$dest")" = "$$skill" ]; then \
+			echo "  ✓ $$name already linked"; \
+			continue; \
+		fi; \
+		if [ -e "$$dest" ] || [ -L "$$dest" ]; then \
+			echo "✗ Refusing to replace existing Claude skill: $$dest"; \
+			exit 1; \
+		fi; \
+		ln -s "$$skill" "$$dest"; \
+		echo "  ✓ $$name linked"; \
+	done
+
 # Link agent instruction files for AI coding tools (force overwrite).
 # agents/AGENTS.md is the primary instruction file; it references ~/OPINIONS.md
 # and ~/VOICE.md, so those are linked into $HOME. AGENTS.md is then linked to
@@ -344,7 +379,7 @@ spicetify-theme: $(DOTFILES_DIR)/omarchy/themes/rudo/spicetify
 #   Gemini CLI  -> ~/.gemini/GEMINI.md
 #   Codex CLI   -> ~/.codex/AGENTS.md
 #   opencode    -> ~/.config/opencode/AGENTS.md
-agents:
+agents: claude-skills
 	@echo "Linking agent instruction files..."
 	@mkdir -p $(HOME_DIR)/.dotfiles-backup
 	@for pair in \
@@ -455,7 +490,19 @@ clean-spicetify:
 		rm -rf "$(CONFIG_DIR)/spicetify/Themes/rudo"; \
 	fi
 
-clean-agents:
+clean-claude-skills:
+	@for skill in $(CLAUDE_SKILLS_SOURCE_DIR)/*; do \
+		if [ ! -d "$$skill" ]; then \
+			continue; \
+		fi; \
+		dest="$(CLAUDE_SKILLS_DIR)/$$(basename "$$skill")"; \
+		if [ -L "$$dest" ] && [ "$$(readlink "$$dest")" = "$$skill" ]; then \
+			echo "Removing $$dest"; \
+			rm -f "$$dest"; \
+		fi; \
+	done
+
+clean-agents: clean-claude-skills
 	@for dest in \
 		"$(HOME_DIR)/OPINIONS.md" \
 		"$(HOME_DIR)/VOICE.md" \
