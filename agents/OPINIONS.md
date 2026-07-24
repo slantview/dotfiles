@@ -9,3 +9,4 @@
 - Always research and plan first.
 - Validate all work.
 - Be complete, don't create stub functions and fake implementations.
+- Use Exa/Tavily MCP tools for web research where justified and allowed (paid tools, richer results); reserve built-in WebSearch for quick recency checks.
