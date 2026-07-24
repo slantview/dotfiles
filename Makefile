@@ -29,7 +29,7 @@ ALL_PRIVATE_DOTFILE_LINKS := $(ALL_PRIVATE_DOTFILES:%=$(HOME_DIR)/.%)
 # Clean targets (exclude zsh and nvim which have specific clean targets)
 ALL_CLEAN := $(addprefix clean-,${ALL_DOTFILES})
 
-.PHONY: all install backup check clean help ghostty-link agents claude-skills clean-agents clean-claude-skills
+.PHONY: all install backup check clean help ghostty-link agents claude-skills clean-agents clean-claude-skills check-canonical
 
 all: install
 
@@ -43,8 +43,19 @@ help:
 	@echo "  make clean    - Remove all symlinks"
 	@echo "  make help     - Show this help message"
 
+# Symlinks must point at a durable checkout. A linked git worktree (where .git
+# is a file, not a directory) is disposable; symlinks created from one dangle
+# as soon as the worktree is removed.
+check-canonical:
+	@if [ -f "$(DOTFILES_DIR)/.git" ] && [ -z "$(ALLOW_WORKTREE_LINK)" ]; then \
+		echo "✗ $(DOTFILES_DIR) is a linked git worktree, not the primary clone."; \
+		echo "  Symlinks created from here will dangle when the worktree is removed."; \
+		echo "  Run make from the primary clone, or override with ALLOW_WORKTREE_LINK=1."; \
+		exit 1; \
+	fi
+
 # Main install target
-install: backup check-zsh check-nvim $(ALL_DOTFILE_LINKS) $(ALL_DIR_LINKS) $(ALL_NVIM_LINK) $(ALL_HYPR_LINK) $(ALL_GHOSTTY_LINK) $(ALL_ALACRITTY_LINK) $(ALL_KITTY_LINK) $(ALL_ZSH_LINK) starship-config zinit git-aliases send-plugin zen-browser-theme spicetify-theme agents
+install: check-canonical backup check-zsh check-nvim $(ALL_DOTFILE_LINKS) $(ALL_DIR_LINKS) $(ALL_NVIM_LINK) $(ALL_HYPR_LINK) $(ALL_GHOSTTY_LINK) $(ALL_ALACRITTY_LINK) $(ALL_KITTY_LINK) $(ALL_ZSH_LINK) starship-config zinit git-aliases send-plugin zen-browser-theme spicetify-theme agents
 	@echo "✓ Installation complete!"
 	@echo "  Installed from: $(DOTFILES_DIR)"
 	@echo "  Run 'exec zsh' to start using the new configuration"
@@ -355,7 +366,7 @@ spicetify-theme: $(DOTFILES_DIR)/omarchy/themes/rudo/spicetify
 	fi
 
 # Link user-owned Claude skills without replacing unowned installed skills.
-claude-skills:
+claude-skills: check-canonical
 	@echo "Linking user-owned Claude skills..."
 	@mkdir -p $(CLAUDE_SKILLS_DIR)
 	@for skill in $(CLAUDE_SKILLS_SOURCE_DIR)/*; do \
@@ -384,7 +395,7 @@ claude-skills:
 #   Gemini CLI  -> ~/.gemini/GEMINI.md
 #   Codex CLI   -> ~/.codex/AGENTS.md
 #   opencode    -> ~/.config/opencode/AGENTS.md
-agents: claude-skills
+agents: check-canonical claude-skills
 	@echo "Linking agent instruction files..."
 	@mkdir -p $(HOME_DIR)/.dotfiles-backup
 	@for pair in \
