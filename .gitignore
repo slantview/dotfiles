@@ -20,6 +20,7 @@ zsh/.zsh_history
 # Backup files
 *.backup
 *.bak
+*.bak.*
 *.old
 .dotfiles-backup/
 
@@ -60,3 +61,5 @@ known_hosts
 # Project-specific
 incoming/*
 CLAUDE.md
+.agents/
+.codex/

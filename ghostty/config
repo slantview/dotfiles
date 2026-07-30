@@ -2,4 +2,4 @@
 # Platform-specific configs: macos.conf, linux.conf, windows.conf
 # Symlink the appropriate one or include directly below
 
-config-file = macos.conf
+config-file = linux.conf
