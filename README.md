@@ -145,7 +145,9 @@ The Hyprland configuration is located in `hypr/` and includes:
 - **Autostart** - Applications launched on startup
 - **Idle/lock** - Screen locking and power management
 
-The configuration is installed to `~/.config/hypr/`. After installation, restart Hyprland or reload the config with `hyprctl reload`.
+The configuration is installed to `~/.config/hypr/`. Shared Omarchy defaults and `hypr/{monitors,input,envs}.lua` load first, then `hypr/hosts/<kernel-hostname>.lua` applies machine-specific overrides. `hypr/hosts/satori.lua` pins the laptop panel to 1920×1200 at 1× while other connected displays auto-extend at their preferred mode; `hypr/hosts/karuna.lua` pins the LG ultrawide to its native 3440×1440@240 and configures NVIDIA. Unknown hosts use safe shared defaults. Add a tracked profile for a new computer as needed; no symlink into backups is required. Omarchy supplies standard application shortcuts; `hypr/bindings.lua` contains only intentional additions or explicitly unbound replacements.
+
+After changing Hyprland Lua, run `hyprctl reload` and check `hyprctl configerrors`. Test host profiles without changing the active display with `DOTFILES_DIR="$PWD" lua tests/hypr-hosts.lua`.
 
 ### Omarchy Theme - Rudo
 
