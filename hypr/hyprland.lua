@@ -1,11 +1,7 @@
 -- Learn how to configure Hyprland: https://wiki.hypr.land/Configuring/Start/
 
--- Load user modules from ~/.config and Omarchy defaults from $OMARCHY_PATH.
-package.path = os.getenv("HOME")
-  .. "/.config/?.lua;"
-  .. (os.getenv("OMARCHY_PATH") or (os.getenv("HOME") .. "/.local/share/omarchy"))
-  .. "/?.lua;"
-  .. package.path
+-- Use Omarchy's module-path and reload setup (including generated theme state).
+dofile((os.getenv("OMARCHY_PATH") or "/usr/share/omarchy") .. "/default/hypr/bootstrap.lua")
 
 -- All Omarchy default setups
 require("default.hypr.omarchy")
@@ -13,9 +9,10 @@ require("default.hypr.omarchy")
 -- Change your own setup in these files and override defaults.
 require("hypr.monitors")
 require("hypr.input")
+require("hypr.envs")
+require("hypr.host")
 require("hypr.bindings")
 require("hypr.looknfeel")
-require("hypr.envs")
 require("hypr.windows")
 require("hypr.autostart")
 
